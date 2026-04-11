@@ -1,0 +1,5 @@
+textstat
+nltk
+fastapi
+uvicorn[standard]
+pydantic

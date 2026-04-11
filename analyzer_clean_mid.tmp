@@ -1,0 +1,56 @@
+﻿
+    @staticmethod
+    def _strip_outlook_quotes(body):
+        """Strip quoted replies and signatures from Outlook email body."""
+        lines = body.split('\n')
+        cleaned = []
+        on_wrote_re = re.compile(r'^On .+ wrote:$')
+        orig_msg_re = re.compile(r'^-{3,}\s*Original Message\s*-{3,}', re.IGNORECASE)
+        underline_re = re.compile(r'^_{3,}')
+        for line in lines:
+            stripped = line.strip()
+            if orig_msg_re.match(stripped):
+                break
+            if re.match(r'^From:', stripped) and len(cleaned) > 3:
+                break
+            if on_wrote_re.match(stripped):
+                break
+            if underline_re.match(stripped) and len(cleaned) > 3:
+                break
+            if stripped.startswith('>'):
+                continue
+            cleaned.append(line)
+        body = '\n'.join(cleaned).strip()
+        for pattern in [r'\n--\s*\n.*', r'\nSent from my (?:iPhone|iPad|Android).*',
+                        r'\nGet Outlook for .*']:
+            body = re.split(pattern, body, flags=re.DOTALL)[0]
+        return body.strip()
+
+    @classmethod
+    def from_eml_directory(cls, dirpath, months_back=12):
+        """Read sent emails from a directory of .eml files."""
+        cutoff = datetime.now() - timedelta(days=months_back * 30)
+        messages = []
+        for filename in os.listdir(dirpath):
+            if not filename.lower().endswith('.eml'):
+                continue
+            filepath = os.path.join(dirpath, filename)
+            try:
+                with open(filepath, 'r', encoding='utf-8', errors='replace') as f:
+                    msg = email.message_from_file(f)
+            except Exception:
+                continue
+            date = cls.parse_date(msg)
+            if date and date.replace(tzinfo=None) < cutoff:
+                continue
+            body = cls.extract_text_body(msg)
+            if not body or len(body.split()) < 5:
+                continue
+            messages.append(EmailMessage(
+                subject=msg.get('Subject', '(no subject)'),
+                body=body,
+                to_addresses=cls.parse_recipients(msg),
+                date=date,
+                message_id=msg.get('Message-ID', '')
+            ))
+        return messages

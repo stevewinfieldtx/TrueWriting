@@ -1,0 +1,367 @@
+﻿"""
+TrueWriting Analyzer - Core Analysis Engine v2
+Analyzes sent emails to generate a TW-0 writing profile.
+
+Key capability: Phrase-level fingerprinting â€” captures HOW the user
+expresses concepts, not just what they write about. This is the
+foundation for authentic AI voice reproduction.
+
+Supports:
+  - .mbox files (Gmail Takeout, Thunderbird export, Outlook export)
+  - .eml files (individual or directory of)
+
+Output: TW-0 profile as JSON including phrase fingerprint data
+        ready for embedding into a vector DB.
+"""
+
+import mailbox
+import email
+import os
+import re
+import json
+import math
+import sys
+from collections import Counter, defaultdict
+from datetime import datetime, timedelta
+from email.utils import parseaddr, parsedate_to_datetime
+
+import textstat
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+from nltk import ngrams as nltk_ngrams
+
+# Win32com for PST support (Windows only)
+try:
+    import win32com.client
+    import pythoncom
+    HAS_WIN32COM = True
+except ImportError:
+    HAS_WIN32COM = False
+
+# Ensure NLTK data is available
+def ensure_nltk_data():
+    """Download required NLTK data if not present."""
+    resources = {
+        'tokenizers/punkt': 'punkt',
+        'tokenizers/punkt_tab': 'punkt_tab',
+        'corpora/stopwords': 'stopwords',
+        'taggers/averaged_perceptron_tagger': 'averaged_perceptron_tagger',
+        'taggers/averaged_perceptron_tagger_eng': 'averaged_perceptron_tagger_eng',
+    }
+    for path, name in resources.items():
+        try:
+            nltk.data.find(path)
+        except LookupError:
+            nltk.download(name, quiet=True)
+
+ensure_nltk_data()
+
+
+# ============================================================
+#  DATA STRUCTURES
+# ============================================================
+
+class EmailMessage:
+    """Lightweight container for a parsed sent email."""
+    def __init__(self, subject, body, to_addresses, date, message_id=None):
+        self.subject = subject
+        self.body = body
+        self.to_addresses = to_addresses  # list of (name, email) tuples
+        self.date = date
+        self.message_id = message_id
+        self.word_count = len(body.split()) if body else 0
+
+
+class PhraseInstance:
+    """A specific occurrence of a phrase with its context."""
+    def __init__(self, phrase, full_sentence, recipient_domain, date, position_in_email):
+        self.phrase = phrase
+        self.full_sentence = full_sentence
+        self.recipient_domain = recipient_domain
+        self.date = date
+        self.position_in_email = position_in_email  # 'opening', 'body', 'closing'
+
+
+# ============================================================
+#  EMAIL INGESTION
+# ============================================================
+
+class EmailIngester:
+    """Reads email from various formats and yields EmailMessage objects."""
+
+    @staticmethod
+    def extract_text_body(msg):
+        """Extract plain text body from email message, stripping quoted replies."""
+        body = ""
+        if msg.is_multipart():
+            for part in msg.walk():
+                if part.get_content_type() == "text/plain":
+                    try:
+                        payload = part.get_payload(decode=True)
+                        if payload:
+                            body = payload.decode('utf-8', errors='replace')
+                            break
+                    except Exception:
+                        continue
+        else:
+            try:
+                payload = msg.get_payload(decode=True)
+                if payload:
+                    body = payload.decode('utf-8', errors='replace')
+            except Exception:
+                body = str(msg.get_payload())
+
+        # Strip quoted replies
+        lines = body.split('\n')
+        cleaned = []
+        for line in lines:
+            stripped = line.strip()
+            if stripped.startswith('>'):
+                continue
+            if re.match(r'^On .+ wrote:$', stripped):
+                break
+            if re.match(r'^-{3,}\s*Original Message\s*-{3,}', stripped, re.IGNORECASE):
+                break
+            if re.match(r'^From:', stripped) and len(cleaned) > 3:
+                break
+            cleaned.append(line)
+
+        body = '\n'.join(cleaned).strip()
+
+        # Remove signatures
+        for pattern in [r'\n--\s*\n.*', r'\nSent from my (?:iPhone|iPad|Android).*', r'\nGet Outlook for .*']:
+            body = re.split(pattern, body, flags=re.DOTALL)[0]
+
+        return body.strip()
+
+    @staticmethod
+    def parse_date(msg):
+        date_str = msg.get('Date', '')
+        if not date_str:
+            return None
+        try:
+            return parsedate_to_datetime(date_str)
+        except Exception:
+            return None
+
+    @staticmethod
+    def parse_recipients(msg):
+        to_raw = msg.get('To', '')
+        if not to_raw:
+            return []
+        recipients = []
+        for addr in to_raw.split(','):
+            name, email_addr = parseaddr(addr.strip())
+            if email_addr:
+                recipients.append((name, email_addr.lower()))
+        return recipients
+
+    @classmethod
+    def from_mbox(cls, filepath, months_back=12):
+        """Read sent emails from an .mbox file."""
+        cutoff = datetime.now() - timedelta(days=months_back * 30)
+        messages = []
+        mbox = mailbox.mbox(filepath)
+
+        for msg in mbox:
+            date = cls.parse_date(msg)
+            if date and date.replace(tzinfo=None) < cutoff:
+                continue
+            body = cls.extract_text_body(msg)
+            if not body or len(body.split()) < 5:
+                continue
+            messages.append(EmailMessage(
+                subject=msg.get('Subject', '(no subject)'),
+                body=body,
+                to_addresses=cls.parse_recipients(msg),
+                date=date,
+                message_id=msg.get('Message-ID', '')
+            ))
+        return messages
+
+    @classmethod
+    def from_pst(cls, filepath, months_back=12):
+        """Read sent emails from a .pst file using Outlook COM interface (Windows only)."""
+        if not HAS_WIN32COM:
+            print("ERROR: pywin32 is required for PST support. Install with: pip install pywin32")
+            sys.exit(1)
+
+        if not os.path.exists(filepath):
+            print(f"ERROR: PST file not found: {filepath}")
+            sys.exit(1)
+
+        cutoff = datetime.now() - timedelta(days=months_back * 30)
+        messages = []
+
+        try:
+            pythoncom.CoInitialize()
+            outlook = win32com.client.Dispatch("Outlook.Application")
+            namespace = outlook.GetNamespace("MAPI")
+
+            # Add the PST file to Outlook
+            pst_path = os.path.abspath(filepath)
+            print(f"Opening PST: {pst_path}")
+            namespace.AddStore(pst_path)
+
+            # Find the added PST store - it will be the last one added
+            pst_folder = None
+            for i in range(namespace.Folders.Count, 0, -1):
+                folder = namespace.Folders.Item(i)
+                try:
+                    store_path = folder.StoreID
+                    pst_folder = folder
+                    break
+                except Exception:
+                    continue
+
+            if not pst_folder:
+                print("ERROR: Could not find PST folder in Outlook")
+                return messages
+
+            print(f"PST loaded as: {pst_folder.Name}")
+
+            # Find Sent Items folder (try multiple names)
+            sent_folder = None
+            sent_names = ['Sent Items', 'Sent Mail', 'Sent', 'Sent Messages']
+
+            def find_sent_folder(parent_folder, depth=0):
+                """Recursively search for sent items folder."""
+                if depth > 3:
+                    return None
+                try:
+                    for j in range(1, parent_folder.Folders.Count + 1):
+                        subfolder = parent_folder.Folders.Item(j)
+                        fname = subfolder.Name
+                        if fname in sent_names:
+                            return subfolder
+                        # Also check subfolders
+                        result = find_sent_folder(subfolder, depth + 1)
+                        if result:
+                            return result
+                except Exception:
+                    pass
+                return None
+
+            sent_folder = find_sent_folder(pst_folder)
+
+            if not sent_folder:
+                # If no dedicated sent folder, scan ALL folders
+                print("No 'Sent Items' folder found. Scanning all folders...")
+                all_folders = []
+                def collect_folders(parent, depth=0):
+                    if depth > 5:
+                        return
+                    try:
+                        all_folders.append(parent)
+                        for j in range(1, parent.Folders.Count + 1):
+                            collect_folders(parent.Folders.Item(j), depth + 1)
+                    except Exception:
+                        pass
+                collect_folders(pst_folder)
+                print(f"Found {len(all_folders)} folders to scan")
+            else:
+                all_folders = [sent_folder]
+                print(f"Found '{sent_folder.Name}' with {sent_folder.Items.Count} items")
+
+            # Extract messages from folders
+            for folder in all_folders:
+                try:
+                    items = folder.Items
+                    item_count = items.Count
+                    if item_count == 0:
+                        continue
+
+                    print(f"  Scanning '{folder.Name}' ({item_count} items)...")
+
+                    for k in range(1, item_count + 1):
+                        try:
+                            item = items.Item(k)
+
+                            # Check if it's a mail item (class 43)
+                            if item.Class != 43:
+                                continue
+
+                            # Get sent date
+                            try:
+                                sent_date = item.SentOn
+                                if sent_date:
+                                    sent_dt = datetime(
+                                        sent_date.year, sent_date.month, sent_date.day,
+                                        sent_date.hour, sent_date.minute, sent_date.second
+                                    )
+                                    if sent_dt < cutoff:
+                                        continue
+                                else:
+                                    sent_dt = None
+                            except Exception:
+                                sent_dt = None
+
+                            # Get body text
+                            try:
+                                body = item.Body
+                            except Exception:
+                                body = ""
+
+                            if not body or len(body.split()) < 5:
+                                continue
+
+                            # Strip quoted content from body
+                            body = cls._strip_outlook_quotes(body)
+                            if not body or len(body.split()) < 5:
+                                continue
+
+                            # Get recipients
+                            to_addresses = []
+                            try:
+                                to_raw = item.To
+                                if to_raw:
+                                    for addr in to_raw.split(';'):
+                                        addr = addr.strip()
+                                        if addr:
+                                            # Try to get email address
+                                            email_match = re.search(r'[\w.+-]+@[\w-]+\.[\w.-]+', addr)
+                                            if email_match:
+                                                to_addresses.append(('', email_match.group().lower()))
+                                            else:
+                                                to_addresses.append((addr, addr.lower()))
+                            except Exception:
+                                pass
+
+                            # Get subject
+                            try:
+                                subject = item.Subject or '(no subject)'
+                            except Exception:
+                                subject = '(no subject)'
+
+                            messages.append(EmailMessage(
+                                subject=subject,
+                                body=body,
+                                to_addresses=to_addresses,
+                                date=sent_dt,
+                                message_id=str(k)
+                            ))
+
+                        except Exception as e:
+                            continue  # Skip problematic items
+
+                except Exception as e:
+                    continue  # Skip problematic folders
+
+            # Remove the PST store from Outlook
+            try:
+                namespace.RemoveStore(pst_folder)
+            except Exception:
+                pass
+
+            pythoncom.CoUninitialize()
+
+        except Exception as e:
+            print(f"ERROR reading PST: {e}")
+            try:
+                pythoncom.CoUninitialize()
+            except Exception:
+                pass
+
+        return messages
+

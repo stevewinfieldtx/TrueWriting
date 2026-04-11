@@ -1,0 +1,881 @@
+﻿
+
+# ============================================================
+#  PHRASE FINGERPRINT ENGINE
+# ============================================================
+
+class PhraseFingerprinter:
+    """
+    Extracts the user's actual phrase-level vocabulary â€” the expressions
+    that make them sound like THEM.
+
+    This is the core differentiator. Anyone can measure readability.
+    This captures "with alacrity" vs "hurry up" vs "let's get moving."
+    """
+
+    # Common phrases that aren't distinctive (everyone says these)
+    NOISE_PHRASES = {
+        'i think', 'i have', 'i am', 'i was', 'i will', 'i can',
+        'it is', 'it was', 'there is', 'there are', 'this is',
+        'that is', 'we have', 'we are', 'we will', 'we can',
+        'do you', 'can you', 'will you', 'would you', 'could you',
+        'let me know', 'thank you', 'thanks for', 'sounds good',
+        'as well', 'in the', 'of the', 'for the', 'on the',
+        'to the', 'at the', 'by the', 'with the', 'from the',
+        'and the', 'but the', 'is the', 'are the', 'was the',
+        'have a', 'has been', 'have been', 'had been',
+        'going to', 'want to', 'need to', 'able to',
+        'a lot', 'a few', 'a bit', 'right now',
+    }
+
+    def __init__(self, messages: list[EmailMessage]):
+        self.messages = messages
+        self.stop_words = set(stopwords.words('english'))
+        self.phrase_instances = []  # list of PhraseInstance
+
+    def extract(self) -> dict:
+        """Run full phrase extraction. Returns phrase fingerprint data."""
+        self._collect_phrase_instances()
+
+        return {
+            "signature_phrases": self._signature_phrases(),
+            "sentence_templates": self._sentence_templates(),
+            "greeting_expressions": self._greeting_expressions(),
+            "closing_expressions": self._closing_expressions(),
+            "transition_phrases": self._transition_phrases(),
+            "intensifiers_and_softeners": self._intensifiers_and_softeners(),
+            "action_phrases": self._action_phrases(),
+            "agreement_disagreement": self._agreement_disagreement(),
+            "temporal_expressions": self._temporal_expressions(),
+            "phrase_embeddings_data": self._prepare_embedding_data(),
+        }
+
+    def _collect_phrase_instances(self):
+        """Scan all emails and collect every meaningful n-gram with context."""
+        for msg in self.messages:
+            if not msg.body:
+                continue
+
+            # Determine recipient domain for context
+            domain = 'unknown'
+            if msg.to_addresses:
+                addr = msg.to_addresses[0][1]
+                domain = addr.split('@')[-1] if '@' in addr else 'unknown'
+
+            sentences = sent_tokenize(msg.body)
+            total_sentences = len(sentences)
+
+            for i, sentence in enumerate(sentences):
+                # Determine position
+                if i == 0:
+                    position = 'opening'
+                elif i >= total_sentences - 2:
+                    position = 'closing'
+                else:
+                    position = 'body'
+
+                # Extract bigrams and trigrams from this sentence
+                words = word_tokenize(sentence.lower())
+                words = [w for w in words if w.isalpha() or w in ("'", "'")]
+
+                # Bigrams
+                for j in range(len(words) - 1):
+                    phrase = f"{words[j]} {words[j+1]}"
+                    if phrase not in self.NOISE_PHRASES:
+                        self.phrase_instances.append(PhraseInstance(
+                            phrase=phrase,
+                            full_sentence=sentence,
+                            recipient_domain=domain,
+                            date=msg.date,
+                            position_in_email=position
+                        ))
+
+                # Trigrams
+                for j in range(len(words) - 2):
+                    phrase = f"{words[j]} {words[j+1]} {words[j+2]}"
+                    if phrase not in self.NOISE_PHRASES:
+                        self.phrase_instances.append(PhraseInstance(
+                            phrase=phrase,
+                            full_sentence=sentence,
+                            recipient_domain=domain,
+                            date=msg.date,
+                            position_in_email=position
+                        ))
+
+                # 4-grams (captures longer expressions)
+                for j in range(len(words) - 3):
+                    phrase = f"{words[j]} {words[j+1]} {words[j+2]} {words[j+3]}"
+                    self.phrase_instances.append(PhraseInstance(
+                        phrase=phrase,
+                        full_sentence=sentence,
+                        recipient_domain=domain,
+                        date=msg.date,
+                        position_in_email=position
+                    ))
+
+                # 5-grams (captures idioms and complex expressions)
+                for j in range(len(words) - 4):
+                    phrase = f"{words[j]} {words[j+1]} {words[j+2]} {words[j+3]} {words[j+4]}"
+                    self.phrase_instances.append(PhraseInstance(
+                        phrase=phrase,
+                        full_sentence=sentence,
+                        recipient_domain=domain,
+                        date=msg.date,
+                        position_in_email=position
+                    ))
+
+    def _signature_phrases(self) -> list:
+        """
+        Find phrases the user uses repeatedly that are distinctive.
+        A signature phrase appears frequently enough to be a habit
+        but isn't a generic English expression.
+        """
+        # Count phrase frequency
+        phrase_freq = Counter(pi.phrase for pi in self.phrase_instances)
+
+        # Minimum threshold: appears in at least 3 emails or 0.5% of messages
+        min_count = max(3, len(self.messages) * 0.005)
+
+        # Filter for meaningful phrases
+        candidates = []
+        for phrase, count in phrase_freq.items():
+            if count < min_count:
+                continue
+            words = phrase.split()
+            # Skip if all words are stop words
+            if all(w in self.stop_words for w in words):
+                continue
+            # Skip very short meaningless combos
+            if len(words) == 2 and any(w in self.stop_words for w in words) and all(len(w) <= 3 for w in words):
+                continue
+
+            # Get example sentences (up to 3)
+            examples = []
+            seen = set()
+            for pi in self.phrase_instances:
+                if pi.phrase == phrase and pi.full_sentence not in seen:
+                    examples.append(pi.full_sentence)
+                    seen.add(pi.full_sentence)
+                    if len(examples) >= 3:
+                        break
+
+            # Get domains where this phrase is used (formality context)
+            domains = Counter(pi.recipient_domain for pi in self.phrase_instances if pi.phrase == phrase)
+
+            # Get positional distribution
+            positions = Counter(pi.position_in_email for pi in self.phrase_instances if pi.phrase == phrase)
+
+            candidates.append({
+                "phrase": phrase,
+                "frequency": count,
+                "frequency_per_100_emails": round(count / len(self.messages) * 100, 1),
+                "example_sentences": examples,
+                "position_distribution": dict(positions),
+                "domain_distribution": dict(domains.most_common(5)),
+                "word_count": len(words),
+            })
+
+        # Sort by frequency, return top 100
+        candidates.sort(key=lambda x: -x["frequency"])
+        return candidates[:100]
+
+    def _sentence_templates(self) -> list:
+        """
+        Detect recurring sentence structures / templates.
+        e.g., "I'd love to [verb]..." or "The key thing here is..."
+        These are sentence openings that the user habitually uses.
+        """
+        # Extract first 5 words of each sentence as a template candidate
+        template_freq = Counter()
+        template_examples = defaultdict(list)
+
+        for msg in self.messages:
+            if not msg.body:
+                continue
+            for sentence in sent_tokenize(msg.body):
+                words = sentence.split()
+                if len(words) < 4:
+                    continue
+                # Try different prefix lengths
+                for prefix_len in [3, 4, 5]:
+                    if len(words) >= prefix_len:
+                        template = ' '.join(words[:prefix_len]).lower()
+                        # Skip if starts with articles/prepositions only
+                        first_word = words[0].lower()
+                        if first_word in ('the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'by', 'it', 'this', 'that'):
+                            continue
+                        template_freq[template] += 1
+                        if len(template_examples[template]) < 3:
+                            template_examples[template].append(sentence)
+
+        min_count = max(3, len(self.messages) * 0.005)
+        templates = []
+        for template, count in template_freq.most_common(50):
+            if count < min_count:
+                continue
+            templates.append({
+                "template": template,
+                "frequency": count,
+                "examples": template_examples[template],
+            })
+
+        return templates
+
+    def _greeting_expressions(self) -> list:
+        """Capture the exact greeting phrases used and their frequency."""
+        greetings = Counter()
+        greeting_examples = defaultdict(list)
+
+        for msg in self.messages:
+            if not msg.body:
+                continue
+            first_line = msg.body.strip().split('\n')[0].strip()
+            # Only capture if it looks like a greeting (short, starts with common greeting words)
+            if len(first_line.split()) <= 8:
+                fl_lower = first_line.lower().rstrip(',!.')
+                if any(fl_lower.startswith(g) for g in ['hi', 'hey', 'hello', 'good', 'dear', 'hope', 'howdy', 'yo', 'greetings']):
+                    greetings[first_line.rstrip(',!. ')] += 1
+                    domain = msg.to_addresses[0][1].split('@')[-1] if msg.to_addresses else 'unknown'
+                    if len(greeting_examples[first_line.rstrip(',!. ')]) < 3:
+                        greeting_examples[first_line.rstrip(',!. ')].append(domain)
+
+        return [
+            {
+                "greeting": greeting,
+                "frequency": count,
+                "used_with_domains": greeting_examples[greeting],
+            }
+            for greeting, count in greetings.most_common(20)
+            if count >= 2
+        ]
+
+    def _closing_expressions(self) -> list:
+        """Capture exact closing phrases."""
+        closings = Counter()
+
+        for msg in self.messages:
+            if not msg.body:
+                continue
+            lines = [l.strip() for l in msg.body.strip().split('\n') if l.strip()]
+            if not lines:
+                continue
+
+            # Check last 3 lines for closings
+            for line in lines[-3:]:
+                line_lower = line.lower().rstrip(',!.')
+                if any(line_lower.startswith(c) for c in [
+                    'thanks', 'thank', 'best', 'regards', 'cheers', 'sincerely',
+                    'take care', 'talk soon', 'chat soon', 'looking forward',
+                    'let me know', 'have a', 'all the best', 'warm', 'kind',
+                    'respectfully', 'appreciate', 'grateful', 'speak soon',
+                ]):
+                    closings[line.rstrip(',!. ')] += 1
+
+        return [
+            {"closing": closing, "frequency": count}
+            for closing, count in closings.most_common(20)
+            if count >= 2
+        ]
+
+    def _transition_phrases(self) -> list:
+        """Capture how the user connects ideas â€” their bridge phrases."""
+        transitions = [
+            'however', 'that said', 'having said that', 'on the other hand',
+            'at the same time', 'with that in mind', 'the flip side',
+            'that being said', 'on another note', 'speaking of',
+            'along those lines', 'in any case', 'either way',
+            'bottom line', 'the bottom line', 'at the end of the day',
+            'long story short', 'the thing is', 'here is the thing',
+            "here's the thing", 'the reality is', 'truth is',
+            'the truth is', 'fact is', 'the fact is',
+            'point being', 'my point is', 'all that to say',
+            'more importantly', 'most importantly', 'key takeaway',
+            'to be clear', 'to be fair', 'to be honest',
+            'for what it is worth', "for what it's worth", 'fwiw',
+            'in other words', 'put differently', 'said another way',
+            'separately', 'on a separate note', 'quick update',
+            'one more thing', 'also worth noting', 'worth mentioning',
+            'i should mention', 'i should note', 'side note',
+            'meanwhile', 'in the meantime', 'in parallel',
+            'as a result', 'consequently', 'therefore',
+            'furthermore', 'moreover', 'additionally',
+            'alternatively', 'instead', 'rather',
+        ]
+
+        text_lower = self.all_text_lower
+        found = {}
+        for t in transitions:
+            count = text_lower.count(t)
+            if count >= 2:
+                # Get example sentences
+                examples = []
+                for msg in self.messages:
+                    if t in msg.body.lower():
+                        for sent in sent_tokenize(msg.body):
+                            if t in sent.lower() and len(examples) < 2:
+                                examples.append(sent)
+                found[t] = {
+                    "frequency": count,
+                    "per_100_emails": round(count / len(self.messages) * 100, 1),
+                    "examples": examples,
+                }
+
+        # Sort by frequency
+        return [{"phrase": k, **v} for k, v in sorted(found.items(), key=lambda x: -x[1]["frequency"])]
+
+    def _intensifiers_and_softeners(self) -> dict:
+        """
+        Capture the user's amplification and hedging vocabulary.
+        These are critical for formality calibration.
+        """
+        intensifiers = [
+            'really', 'very', 'extremely', 'incredibly', 'absolutely',
+            'definitely', 'certainly', 'completely', 'totally', 'entirely',
+            'particularly', 'especially', 'significantly', 'substantially',
+            'genuinely', 'truly', 'deeply', 'highly', 'strongly',
+            'super', 'crazy', 'insanely', 'ridiculously', 'massively',
+            'huge', 'enormous', 'tremendous', 'phenomenal', 'outstanding',
+        ]
+
+        softeners = [
+            'maybe', 'perhaps', 'possibly', 'might', 'could',
+            'sort of', 'kind of', 'a bit', 'a little', 'somewhat',
+            'i think', 'i believe', 'i feel', 'i guess', 'i suppose',
+            'it seems', 'it appears', 'apparently', 'presumably',
+            'not sure if', 'i wonder', 'just wondering',
+            'would it be possible', 'if possible', 'if you could',
+            'no worries if', 'no pressure', 'when you get a chance',
+            'at your convenience', 'feel free to',
+        ]
+
+        text_lower = self.all_text_lower
+        total_words = sum(m.word_count for m in self.messages)
+
+        intensifier_usage = {}
+        for word in intensifiers:
+            count = len(re.findall(r'\b' + re.escape(word) + r'\b', text_lower))
+            if count >= 2:
+                intensifier_usage[word] = count
+
+        softener_usage = {}
+        for phrase in softeners:
+            count = text_lower.count(phrase)
+            if count >= 2:
+                softener_usage[phrase] = count
+
+        intensifier_total = sum(intensifier_usage.values())
+        softener_total = sum(softener_usage.values())
+
+        return {
+            "intensifiers": dict(sorted(intensifier_usage.items(), key=lambda x: -x[1])),
+            "softeners": dict(sorted(softener_usage.items(), key=lambda x: -x[1])),
+            "intensifier_per_1000_words": round(intensifier_total / total_words * 1000, 1) if total_words else 0,
+            "softener_per_1000_words": round(softener_total / total_words * 1000, 1) if total_words else 0,
+            "confidence_ratio": round(intensifier_total / (intensifier_total + softener_total), 3) if (intensifier_total + softener_total) > 0 else 0.5,
+            "style": "assertive" if intensifier_total > softener_total * 1.5
+                else "diplomatic" if softener_total > intensifier_total * 1.5
+                else "balanced",
+        }
+
+    def _action_phrases(self) -> list:
+        """
+        Capture how the user asks people to do things.
+        "Can you..." vs "Please..." vs "I need you to..." vs "Would you mind..."
+        This is a massive formality indicator.
+        """
+        action_starters = [
+            "can you", "could you", "would you", "will you",
+            "please", "i need you to", "i need", "we need",
+            "i'd like you to", "i'd love for you to",
+            "would you mind", "do you mind", "if you could",
+            "go ahead and", "feel free to", "make sure",
+            "don't forget to", "be sure to", "i'd appreciate",
+            "it would be great if", "let's", "why don't we",
+            "how about", "what if we", "i suggest",
+            "i recommend", "i'd recommend", "my recommendation",
+            "the ask is", "the request is", "action item",
+            "next steps", "to do", "action needed",
+        ]
+
+        text_lower = self.all_text_lower
+        found = {}
+        for phrase in action_starters:
+            count = text_lower.count(phrase)
+            if count >= 2:
+                examples = []
+                for msg in self.messages:
+                    if phrase in msg.body.lower():
+                        for sent in sent_tokenize(msg.body):
+                            if phrase in sent.lower() and len(examples) < 2:
+                                examples.append(sent)
+                found[phrase] = {"frequency": count, "examples": examples}
+
+        return [{"phrase": k, **v} for k, v in sorted(found.items(), key=lambda x: -x[1]["frequency"])]
+
+    def _agreement_disagreement(self) -> dict:
+        """How does the user express agreement and disagreement?"""
+        agreement = [
+            'i agree', 'agreed', 'absolutely', 'exactly', 'precisely',
+            'good point', 'great point', 'fair point', "you're right",
+            'that makes sense', 'makes sense', 'totally', 'for sure',
+            '100%', 'spot on', 'nailed it', 'bingo', 'yes',
+            'love it', 'love that', 'love this', 'perfect',
+            "i'm on board", "i'm aligned", 'works for me',
+            'sounds right', 'sounds good', 'sounds great',
+        ]
+
+        disagreement = [
+            'i disagree', 'i respectfully disagree', 'not sure i agree',
+            "i don't think", "i'm not sure", "i'm not convinced",
+            'i see it differently', 'my concern is', 'my worry is',
+            'the issue is', 'the problem is', 'the challenge is',
+            'pushback', 'push back', 'not quite', 'not exactly',
+            'i hear you but', 'that said', 'devil is advocate',
+            "let me play devil's advocate", 'on the flip side',
+            'counterpoint', 'counter point', 'to be fair',
+            'hold on', 'wait', 'hang on', 'not so fast',
+        ]
+
+        text_lower = self.all_text_lower
+        agree_found = {p: text_lower.count(p) for p in agreement if text_lower.count(p) >= 1}
+        disagree_found = {p: text_lower.count(p) for p in disagreement if text_lower.count(p) >= 1}
+
+        return {
+            "agreement_phrases": dict(sorted(agree_found.items(), key=lambda x: -x[1])),
+            "disagreement_phrases": dict(sorted(disagree_found.items(), key=lambda x: -x[1])),
+            "disagreement_style": "direct" if any(text_lower.count(p) >= 2 for p in ['i disagree', "i don't think", 'the problem is'])
+                else "diplomatic" if any(text_lower.count(p) >= 2 for p in ["i'm not sure", 'my concern is', 'to be fair'])
+                else "rare" if sum(disagree_found.values()) < 5
+                else "balanced",
+        }
+
+    def _temporal_expressions(self) -> list:
+        """How does the user reference time and urgency?"""
+        temporal = [
+            'asap', 'as soon as possible', 'right away', 'immediately',
+            'at your earliest', 'at your convenience', 'when you get a chance',
+            'no rush', 'no hurry', 'take your time', 'whenever you can',
+            'by end of day', 'by eod', 'by cob', 'by end of week',
+            'this week', 'next week', 'early next week', 'later this week',
+            'in the next few days', 'in the coming weeks',
+            'sooner rather than later', 'time sensitive', 'time-sensitive',
+            'urgent', 'priority', 'high priority', 'critical',
+            'quick turnaround', 'tight timeline', 'tight deadline',
+            'moving forward', 'going forward', 'from here',
+        ]
+
+        text_lower = self.all_text_lower
+        found = {}
+        for phrase in temporal:
+            count = text_lower.count(phrase)
+            if count >= 1:
+                found[phrase] = count
+
+        # Classify urgency style
+        urgent_count = sum(found.get(p, 0) for p in ['asap', 'immediately', 'urgent', 'critical', 'right away'])
+        relaxed_count = sum(found.get(p, 0) for p in ['no rush', 'no hurry', 'take your time', 'when you get a chance', 'at your convenience'])
+
+        return {
+            "expressions": dict(sorted(found.items(), key=lambda x: -x[1])),
+            "urgency_style": "pressing" if urgent_count > relaxed_count * 2
+                else "relaxed" if relaxed_count > urgent_count * 2
+                else "balanced",
+        }
+
+    def _prepare_embedding_data(self) -> list:
+        """
+        Prepare phrase data for embedding into a vector DB.
+        Each item is a phrase + context ready to be embedded.
+
+        This is the bridge between the Python analyzer and the
+        vector DB / LLM layer.
+        """
+        # Collect top signature phrases with their full context sentences
+        phrase_freq = Counter(pi.phrase for pi in self.phrase_instances)
+        min_count = max(3, len(self.messages) * 0.005)
+
+        embedding_records = []
+        seen_phrases = set()
+
+        for phrase, count in phrase_freq.most_common(200):
+            if count < min_count:
+                continue
+            words = phrase.split()
+            if all(w in self.stop_words for w in words):
+                continue
+            if phrase in seen_phrases:
+                continue
+            seen_phrases.add(phrase)
+
+            # Collect context
+            context_sentences = []
+            domains = Counter()
+            positions = Counter()
+
+            for pi in self.phrase_instances:
+                if pi.phrase == phrase:
+                    if len(context_sentences) < 5 and pi.full_sentence not in context_sentences:
+                        context_sentences.append(pi.full_sentence)
+                    domains[pi.recipient_domain] += 1
+                    positions[pi.position_in_email] += 1
+
+            embedding_records.append({
+                "phrase": phrase,
+                "frequency": count,
+                "context_sentences": context_sentences,
+                "position_distribution": dict(positions),
+                "recipient_domain_distribution": dict(domains.most_common(5)),
+                # This text gets embedded into the vector DB
+                "embedding_text": f"The user frequently says '{phrase}'. Example usage: {context_sentences[0] if context_sentences else phrase}",
+            })
+
+        return embedding_records
+
+    @property
+    def all_text_lower(self):
+        if not hasattr(self, '_all_text_lower'):
+            self._all_text_lower = ' '.join(m.body.lower() for m in self.messages if m.body)
+        return self._all_text_lower
+
+
+# ============================================================
+#  MAIN TW-0 ANALYZER
+# ============================================================
+
+class TrueWritingAnalyzer:
+    """
+    Core TW-0 analysis engine.
+    Combines statistical NLP metrics with phrase-level fingerprinting.
+    """
+
+    def __init__(self, messages: list[EmailMessage]):
+        self.messages = messages
+        self.all_bodies = [m.body for m in messages if m.body]
+        self.all_text = ' '.join(self.all_bodies)
+        self.stop_words = set(stopwords.words('english'))
+        self.fingerprinter = PhraseFingerprinter(messages)
+
+    def analyze(self) -> dict:
+        """Run full TW-0 analysis. Returns the complete profile dict."""
+        if not self.messages:
+            return {"error": "No messages to analyze"}
+
+        print(f"Analyzing {len(self.messages)} emails...")
+
+        profile = {
+            "tw_version": "0.2.0",
+            "tw_score": "TW-0",
+            "generated_at": datetime.now().isoformat(),
+
+            # === CORPUS STATS ===
+            "corpus_stats": self._corpus_stats(),
+
+            # === STATISTICAL METRICS (Python strength) ===
+            "vocabulary": self._vocabulary_analysis(),
+            "readability": self._readability_analysis(),
+            "sentence_structure": self._sentence_analysis(),
+            "paragraph_structure": self._paragraph_analysis(),
+            "grammar_signature": self._grammar_signature(),
+            "punctuation_profile": self._punctuation_profile(),
+
+            # === PHRASE FINGERPRINT (the differentiator) ===
+            "phrase_fingerprint": self.fingerprinter.extract(),
+
+            # === STRUCTURE & TONE ===
+            "email_structure": self._email_structure(),
+            "tone_indicators": self._tone_indicators(),
+
+            # === RECIPIENT DATA (for formality calibration) ===
+            "recipients": self._recipient_summary(),
+        }
+
+        print(f"TW-0 profile generated: {len(json.dumps(profile))} bytes")
+        return profile
+
+    # ---- CORPUS STATS ----
+
+    def _corpus_stats(self) -> dict:
+        dates = [m.date for m in self.messages if m.date]
+        return {
+            "total_messages_analyzed": len(self.messages),
+            "total_words": sum(m.word_count for m in self.messages),
+            "avg_words_per_email": round(sum(m.word_count for m in self.messages) / len(self.messages), 1),
+            "date_range": {
+                "earliest": min(dates).isoformat() if dates else None,
+                "latest": max(dates).isoformat() if dates else None,
+            },
+            "emails_per_month": dict(sorted(
+                Counter(m.date.strftime('%Y-%m') for m in self.messages if m.date).items()
+            )),
+        }
+
+    # ---- VOCABULARY ----
+
+    def _vocabulary_analysis(self) -> dict:
+        words = word_tokenize(self.all_text.lower())
+        words = [w for w in words if w.isalpha() and len(w) > 1]
+        total = len(words)
+        unique = set(words)
+        content_words = [w for w in words if w not in self.stop_words]
+
+        freq = Counter(content_words)
+        ttr = len(unique) / total if total > 0 else 0
+        avg_word_len = sum(len(w) for w in words) / total if total > 0 else 0
+        complex_words = [w for w in content_words if textstat.syllable_count(w) >= 3]
+        complex_ratio = len(complex_words) / len(content_words) if content_words else 0
+
+        # Words that appear in >20% of emails
+        per_email_freq = defaultdict(int)
+        for body in self.all_bodies:
+            email_words = set(w.lower() for w in word_tokenize(body) if w.isalpha() and w.lower() not in self.stop_words)
+            for w in email_words:
+                per_email_freq[w] += 1
+
+        sig_threshold = len(self.messages) * 0.15
+        signature_words = {w: count for w, count in per_email_freq.items()
+                          if count >= sig_threshold and len(w) > 3}
+        signature_words = dict(sorted(signature_words.items(), key=lambda x: -x[1])[:40])
+
+        return {
+            "total_words": total,
+            "unique_words": len(unique),
+            "type_token_ratio": round(ttr, 4),
+            "avg_word_length": round(avg_word_len, 2),
+            "complex_word_ratio": round(complex_ratio, 4),
+            "top_content_words": [{"word": w, "count": c} for w, c in freq.most_common(50)],
+            "signature_words": signature_words,
+            "vocabulary_level": "advanced" if complex_ratio > 0.12 and avg_word_len > 5.0
+                else "intermediate" if complex_ratio > 0.06
+                else "conversational",
+        }
+
+    # ---- READABILITY ----
+
+    def _readability_analysis(self) -> dict:
+        text = self.all_text
+        if len(text) < 100:
+            return {"note": "Insufficient text"}
+
+        per_email_fk = []
+        for body in self.all_bodies:
+            if len(body.split()) >= 20:
+                try:
+                    per_email_fk.append(textstat.flesch_kincaid_grade(body))
+                except Exception:
+                    pass
+
+        grade = textstat.flesch_kincaid_grade(text)
+        return {
+            "flesch_reading_ease": round(textstat.flesch_reading_ease(text), 1),
+            "flesch_kincaid_grade": round(grade, 1),
+            "gunning_fog": round(textstat.gunning_fog(text), 1),
+            "coleman_liau": round(textstat.coleman_liau_index(text), 1),
+            "per_email_grade": {
+                "min": round(min(per_email_fk), 1) if per_email_fk else None,
+                "max": round(max(per_email_fk), 1) if per_email_fk else None,
+                "mean": round(sum(per_email_fk) / len(per_email_fk), 1) if per_email_fk else None,
+            },
+            "difficulty_label": "simple" if grade <= 6 else "standard" if grade <= 9
+                else "professional" if grade <= 12 else "academic",
+        }
+
+    # ---- SENTENCE STRUCTURE ----
+
+    def _sentence_analysis(self) -> dict:
+        all_sentences = []
+        sentence_lengths = []
+
+        for body in self.all_bodies:
+            for s in sent_tokenize(body):
+                all_sentences.append(s)
+                sentence_lengths.append(len(s.split()))
+
+        if not sentence_lengths:
+            return {"note": "Insufficient data"}
+
+        # Sentence starters
+        starters = Counter()
+        for s in all_sentences:
+            words = s.split()
+            if words and words[0].isalpha():
+                starters[words[0].lower()] += 1
+
+        total = len(sentence_lengths)
+        short = sum(1 for l in sentence_lengths if l <= 8)
+        medium = sum(1 for l in sentence_lengths if 9 <= l <= 20)
+        long_s = sum(1 for l in sentence_lengths if 21 <= l <= 35)
+        very_long = sum(1 for l in sentence_lengths if l > 35)
+
+        questions = sum(1 for s in all_sentences if s.strip().endswith('?'))
+        exclamations = sum(1 for s in all_sentences if s.strip().endswith('!'))
+
+        return {
+            "total_sentences": total,
+            "avg_length": round(sum(sentence_lengths) / total, 1),
+            "median_length": sorted(sentence_lengths)[total // 2],
+            "length_distribution": {
+                "short_pct": round(short / total * 100, 1),
+                "medium_pct": round(medium / total * 100, 1),
+                "long_pct": round(long_s / total * 100, 1),
+                "very_long_pct": round(very_long / total * 100, 1),
+            },
+            "type_distribution": {
+                "statements_pct": round((total - questions - exclamations) / total * 100, 1),
+                "questions_pct": round(questions / total * 100, 1),
+                "exclamations_pct": round(exclamations / total * 100, 1),
+            },
+            "top_sentence_starters": [{"word": w, "count": c} for w, c in starters.most_common(15)],
+        }
+
+    # ---- PARAGRAPH STRUCTURE ----
+
+    def _paragraph_analysis(self) -> dict:
+        para_lengths = []
+        for body in self.all_bodies:
+            paragraphs = [p.strip() for p in body.split('\n\n') if p.strip()]
+            for p in paragraphs:
+                para_lengths.append(len(sent_tokenize(p)))
+
+        if not para_lengths:
+            return {"note": "Insufficient data"}
+
+        single = sum(1 for l in para_lengths if l == 1)
+        return {
+            "avg_paragraphs_per_email": round(
+                sum(1 for b in self.all_bodies for p in b.split('\n\n') if p.strip()) / len(self.all_bodies), 1),
+            "avg_sentences_per_paragraph": round(sum(para_lengths) / len(para_lengths), 1),
+            "single_sentence_ratio": round(single / len(para_lengths), 3),
+            "style": "fragmented" if single / len(para_lengths) > 0.6
+                else "balanced" if single / len(para_lengths) > 0.3
+                else "dense",
+        }
+
+    # ---- GRAMMAR SIGNATURE ----
+
+    def _grammar_signature(self) -> dict:
+        contraction_pattern = re.compile(r"\b\w+n['\u2019]t\b|\b\w+['\u2019](?:ve|re|ll|d|s|m)\b", re.IGNORECASE)
+        no_contraction = re.compile(r'\b(?:do not|does not|did not|will not|would not|could not|should not|cannot|is not|are not|was not|were not|have not|has not|I am|I have|I will|we are|we have|they are)\b', re.IGNORECASE)
+        passive_pattern = re.compile(r'\b(?:is|are|was|were|been|being)\s+\w+ed\b', re.IGNORECASE)
+
+        contractions = sum(len(contraction_pattern.findall(b)) for b in self.all_bodies)
+        expanded = sum(len(no_contraction.findall(b)) for b in self.all_bodies)
+        passive = sum(len(passive_pattern.findall(b)) for b in self.all_bodies)
+        total_words = sum(m.word_count for m in self.messages)
+        text_lower = self.all_text.lower()
+
+        i_count = len(re.findall(r'\b(?:i|me|my|mine)\b', text_lower))
+        we_count = len(re.findall(r'\b(?:we|us|our|ours)\b', text_lower))
+        you_count = len(re.findall(r'\b(?:you|your|yours)\b', text_lower))
+
+        c_ratio = contractions / (contractions + expanded) if (contractions + expanded) > 0 else 0
+
+        return {
+            "contraction_ratio": round(c_ratio, 3),
+            "contraction_style": "informal" if c_ratio > 0.7 else "mixed" if c_ratio > 0.3 else "formal",
+            "passive_per_1000": round(passive / total_words * 1000, 1) if total_words else 0,
+            "perspective": {
+                "i_per_1000": round(i_count / total_words * 1000, 1) if total_words else 0,
+                "we_per_1000": round(we_count / total_words * 1000, 1) if total_words else 0,
+                "you_per_1000": round(you_count / total_words * 1000, 1) if total_words else 0,
+                "dominant": "self_focused" if i_count > we_count and i_count > you_count
+                    else "team_focused" if we_count > you_count
+                    else "audience_focused",
+            },
+        }
+
+    # ---- PUNCTUATION ----
+
+    def _punctuation_profile(self) -> dict:
+        total_words = sum(m.word_count for m in self.messages)
+        excl = sum(b.count('!') for b in self.all_bodies)
+        question = sum(b.count('?') for b in self.all_bodies)
+        ellipsis = sum(b.count('...') + b.count('â€¦') for b in self.all_bodies)
+        em_dash = sum(b.count('â€”') + b.count(' - ') + b.count('--') for b in self.all_bodies)
+        semicolon = sum(b.count(';') for b in self.all_bodies)
+        caps = sum(len(re.findall(r'\b[A-Z]{2,}\b', b)) for b in self.all_bodies)
+
+        return {
+            "exclamation_per_1000": round(excl / total_words * 1000, 1) if total_words else 0,
+            "question_per_1000": round(question / total_words * 1000, 1) if total_words else 0,
+            "ellipsis_per_email": round(ellipsis / len(self.messages), 2),
+            "em_dash_per_email": round(em_dash / len(self.messages), 2),
+            "semicolon_per_1000": round(semicolon / total_words * 1000, 1) if total_words else 0,
+            "caps_per_1000": round(caps / total_words * 1000, 1) if total_words else 0,
+            "energy": "enthusiastic" if excl / total_words * 1000 > 8
+                else "moderate" if excl / total_words * 1000 > 3
+                else "restrained",
+        }
+
+    # ---- EMAIL STRUCTURE ----
+
+    def _email_structure(self) -> dict:
+        has_greeting = 0
+        has_closing = 0
+
+        for body in self.all_bodies:
+            lines = body.strip().split('\n')
+            if not lines:
+                continue
+            first = lines[0].strip().lower()
+            if any(first.startswith(g) for g in ['hi', 'hey', 'hello', 'good', 'dear', 'hope', 'howdy']):
+                has_greeting += 1
+            last_chunk = ' '.join(lines[-3:]).strip().lower()
+            if any(c in last_chunk for c in ['thanks', 'thank', 'best', 'regards', 'cheers', 'take care', 'sincerely']):
+                has_closing += 1
+
+        total = len(self.messages)
+        return {
+            "greeting_pct": round(has_greeting / total * 100, 1),
+            "closing_pct": round(has_closing / total * 100, 1),
+        }
+
+    # ---- TONE INDICATORS ----
+
+    def _tone_indicators(self) -> dict:
+        grammar = self._grammar_signature()
+        punct = self._punctuation_profile()
+        readability = self._readability_analysis()
+
+        formality = 5.0
+        if grammar["contraction_style"] == "formal":
+            formality += 1.5
+        elif grammar["contraction_style"] == "informal":
+            formality -= 1.5
+        if punct["energy"] == "enthusiastic":
+            formality -= 1
+        elif punct["energy"] == "restrained":
+            formality += 0.5
+        grade = readability.get("flesch_kincaid_grade", 8)
+        if grade > 12:
+            formality += 1
+        elif grade < 6:
+            formality -= 1
+        formality = max(0, min(10, formality))
+
+        return {
+            "baseline_formality": round(formality, 1),
+            "formality_label": "formal" if formality > 7 else "professional" if formality > 5
+                else "conversational" if formality > 3 else "casual",
+            "energy": punct["energy"],
+            "perspective": grammar["perspective"]["dominant"],
+        }
+
+    # ---- RECIPIENTS ----
+
+    def _recipient_summary(self) -> dict:
+        all_recipients = set()
+        domain_counts = Counter()
+        for m in self.messages:
+            for name, addr in m.to_addresses:
+                all_recipients.add(addr)
+                domain = addr.split('@')[-1] if '@' in addr else 'unknown'
+                domain_counts[domain] += 1
+
+        return {
+            "unique_recipients": len(all_recipients),
+            "top_domains": [{"domain": d, "count": c} for d, c in domain_counts.most_common(20)],
+            "recipients_for_calibration": [
+                {"email_hash": hash(addr) % 10**8, "domain": addr.split('@')[-1], "email_count": 0}
+                for addr in list(all_recipients)[:50]
+            ],
+        }
