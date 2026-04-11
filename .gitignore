@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+.venv/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Generated output / data files
+corpus_sent.json
+tw0_profile_*.json
+
+# Temp / working files
+*.tmp
+*.v2
+
+# Local dev scripts
+*.bat
+
+# Claude Code config
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
