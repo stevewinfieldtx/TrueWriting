@@ -32,3 +32,4 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+.chimera_token_cache.json 
