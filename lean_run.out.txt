@@ -1,0 +1,42 @@
+
+Scoring 300 held-out real emails (Chimera + DLP only)...
+  Chimera  mean=0.0075 median=0.0022 p95=0.0034
+  DLP      mean=0.0075 nonzero=11 >=0.5=2
+  Lean     mean=0.1514 median=0.1275 p95=0.1815
+  Verdicts on reals:  {'pass': 293, 'flag': 0, 'block': 7}
+  Reasons on reals:   {'clean': 293, 'chimera_high': 5, 'dlp_hit': 2}
+
+--- zero_shot (n=50) ---
+  Chimera  AUC=0.9933  catch@2%FPR=0.960
+  DLP      AUC=0.7979  catch@2%FPR=0.440
+  Lean     AUC=0.9890  catch@2%FPR=0.960
+  Verdicts: {'pass': 2, 'flag': 0, 'block': 48}
+  Reasons:  {'chimera_high': 48, 'clean': 2}
+
+--- few_shot (n=50) ---
+  Chimera  AUC=0.8824  catch@2%FPR=0.460
+  DLP      AUC=0.7379  catch@2%FPR=0.420
+  Lean     AUC=0.9246  catch@2%FPR=0.520
+  Verdicts: {'pass': 18, 'flag': 0, 'block': 32}
+  Reasons:  {'dlp_hit': 11, 'clean': 18, 'chimera_high': 20, 'chimera_mid+dlp_hit': 1}
+
+--- high_fidelity (n=50) ---
+  Chimera  AUC=0.9327  catch@2%FPR=0.660
+  DLP      AUC=0.7381  catch@2%FPR=0.420
+  Lean     AUC=0.9373  catch@2%FPR=0.600
+  Verdicts: {'pass': 18, 'flag': 0, 'block': 32}
+  Reasons:  {'chimera_high': 27, 'dlp_hit': 3, 'clean': 18, 'chimera_mid+dlp_hit': 2}
+
+=== OVERALL (all tiers combined) ===
+  Chimera  AUC=0.9361  catch@2%FPR=0.693
+  DLP      AUC=0.7580  catch@2%FPR=0.427
+  Lean     AUC=0.9503  catch@2%FPR=0.693
+
+--- Ship Gate (composed catch@2%FPR >= 0.85 per tier, false-flag <= 3%) ---
+  zero_shot        lean catch@2%FPR=0.960  PASS (need >= 0.85)
+  few_shot         lean catch@2%FPR=0.520  FAIL (need >= 0.85)
+  high_fidelity    lean catch@2%FPR=0.600  FAIL (need >= 0.85)
+  real-false-flag  rate=0.023  PASS (need <= 0.030)
+  OVERALL          FAIL
+
+Saved: eval_results\lean_run_20260416_181913.json

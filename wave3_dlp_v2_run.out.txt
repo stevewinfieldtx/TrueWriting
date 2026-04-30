@@ -1,0 +1,47 @@
+
+Scoring 300 held-out real emails...
+  Chimera   stats:  mean=0.0075 median=0.0022 p95=0.0034
+  DLP       stats:  mean=0.0075 median=0.0000 p95=0.0000  n_nonzero=11
+  Context   stats:  mean=0.4052 median=0.3659 p95=0.9123
+  Composed  stats:  mean=0.3221 median=0.2430 p95=0.7243
+  Verdicts on reals:  {'pass': 248, 'flag': 45, 'block': 7}  (flag/block = false-flag)
+
+--- zero_shot (n=50) ---
+  Chimera   AUC=0.9933  catch@2%FPR=0.960
+  DLP       AUC=0.7979  catch@2%FPR=0.440  (mean=0.321, nonzero=31/50)
+  Context   AUC=0.5626  catch@2%FPR=0.000
+  Composed  AUC=0.9835  catch@2%FPR=0.960
+  Verdicts:  {'pass': 2, 'flag': 0, 'block': 48}
+  Reasons:   {'chimera_high': 48, 'grey_zone': 1, 'clean': 1}
+
+--- few_shot (n=50) ---
+  Chimera   AUC=0.8824  catch@2%FPR=0.460
+  DLP       AUC=0.7379  catch@2%FPR=0.420  (mean=0.297, nonzero=25/50)
+  Context   AUC=0.5801  catch@2%FPR=0.000
+  Composed  AUC=0.8722  catch@2%FPR=0.520
+  Verdicts:  {'pass': 17, 'flag': 1, 'block': 32}
+  Reasons:   {'dlp_hit': 11, 'grey_zone': 8, 'chimera_high': 20, 'clean': 9, 'chimera_mid+dlp_hit': 1, 'context_high': 1}
+
+--- high_fidelity (n=50) ---
+  Chimera   AUC=0.9327  catch@2%FPR=0.660
+  DLP       AUC=0.7381  catch@2%FPR=0.420  (mean=0.313, nonzero=25/50)
+  Context   AUC=0.5779  catch@2%FPR=0.000
+  Composed  AUC=0.8858  catch@2%FPR=0.600
+  Verdicts:  {'pass': 17, 'flag': 1, 'block': 32}
+  Reasons:   {'chimera_high': 27, 'dlp_hit': 3, 'clean': 12, 'grey_zone': 5, 'context_high': 1, 'chimera_mid+dlp_hit': 2}
+
+=== OVERALL (all tiers combined) ===
+  Chimera   AUC=0.9361  catch@2%FPR=0.693
+  DLP       AUC=0.7580  catch@2%FPR=0.427
+  Context   AUC=0.5735  catch@2%FPR=0.000
+  Composed  AUC=0.9138  catch@2%FPR=0.693
+
+--- Wave 3 Ship Gate ---
+  zero_shot        composed catch@2%FPR=0.960  PASS (need >= 0.85)
+  few_shot         composed catch@2%FPR=0.520  FAIL (need >= 0.85)
+  high_fidelity    composed catch@2%FPR=0.600  FAIL (need >= 0.85)
+  real-false-flag  rate=0.173  FAIL (need <= 0.030)
+  OVERALL          FAIL
+
+Saved: eval_results\wave3_dlp_run_20260416_181133.json
+Always-latest: eval_results\wave3_latest.json

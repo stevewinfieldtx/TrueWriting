@@ -1,0 +1,44 @@
+# Folder-scoped hygiene — belt-and-suspenders on top of the root .gitignore.
+# If this folder is ever copied out of the repo (handoff, partner shares, pilot
+# packaging), these rules travel with it.
+
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+.venv/
+
+# Pilot / eval artifacts (can be regenerated; contain per-user signals)
+*.pkl
+*.joblib
+corpus_*.json
+tw0_profile_*.json
+cpp_*.json
+eval_results/
+enron_cpps/
+pilot_logs/
+
+# Real email payloads MUST NEVER be committed — we handle them in memory only,
+# but this is a failsafe in case a debug dump lands here.
+emails/
+mailbox_*.json
+*.eml
+*.mbox
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Temp / working
+*.tmp
+*.bak
+*.v2

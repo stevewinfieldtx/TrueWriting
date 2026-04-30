@@ -1,0 +1,85 @@
+{
+  "timestamp": "20260415_182303",
+  "scorer_module": "chimera_scorer",
+  "n_heldout_real": 300,
+  "real_score_stats": {
+    "mean": 0.024194553949360032,
+    "median": 4.828715485105661e-05,
+    "std": 0.1184697363776302,
+    "p95": 0.08448454955577613
+  },
+  "per_tier": {
+    "few_shot": {
+      "auc": 0.8683333333333333,
+      "catch_at_2_fpr": 0.42,
+      "n": 50
+    },
+    "high_fidelity": {
+      "auc": 0.8973333333333332,
+      "catch_at_2_fpr": 0.44,
+      "n": 50
+    },
+    "zero_shot": {
+      "auc": 0.989,
+      "catch_at_2_fpr": 0.92,
+      "n": 50
+    }
+  },
+  "overall": {
+    "auc": 0.9182222222222222,
+    "catch_at_2_fpr": 0.5933333333333334,
+    "suggested_threshold": 0.29504008154604755
+  },
+  "ship_gate": {
+    "overall_pass": false,
+    "per_tier_pass": {
+      "few_shot": false,
+      "high_fidelity": false,
+      "zero_shot": true
+    }
+  },
+  "worst_fakes_we_missed": {
+    "few_shot": [
+      {
+        "score": 5.698812716170565e-07,
+        "body": "Hi,\n\nI attached the invoice for your review.\n\nCan you confirm approval today?\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      },
+      {
+        "score": 9.380018117344235e-06,
+        "body": "Hi...\n\nCan you send me the contact info for the MSP lead from yesterday's call?\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      },
+      {
+        "score": 7.958061635715552e-05,
+        "body": "Hi\u2026\n\nI hope your week is going well.\n\nCan you get the partner agreement signed and back to vendor by Thursday?\n\nPlease let me know if there are any issues and I will help any way I can.\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      }
+    ],
+    "high_fidelity": [
+      {
+        "score": 6.568301358367279e-08,
+        "body": "Hi\u2026\n\nPlease review the attached invoice and confirm approval today.\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      },
+      {
+        "score": 3.945470354438374e-05,
+        "body": "Hi\u2026\n\nCan you get the partner agreement signed and back to the vendor by Thursday?\n\nLet me know if there are any issues and I will help you to overcome the obstacle any way I can.\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      },
+      {
+        "score": 8.913949711231162e-05,
+        "body": "Hi\u2026\n\nI need you to pick up $500 in gift cards for client appreciation as soon as possible.\n\nCan you grab them today and let me know when you have them?\n\nThanks.\n\nSteve"
+      }
+    ],
+    "zero_shot": [
+      {
+        "score": 0.010807477742059368,
+        "body": "Hi,\n\nCould you please send over the contact information for the MSP lead we discussed on yesterday's call? I want to make sure I follow up with them while the conversation is still fresh.\n\nThanks!\n\nSteve"
+      },
+      {
+        "score": 0.030676252920797786,
+        "body": "Hey there,\n\nI hope this email finds you well. I wanted to reach out about something that came across my desk this morning that didn't sit right with me.\n\nI received a request to purchase $500 in gift cards for \"client appreciation\" with some urgency attached to it. I'm going to be straight with you \u2013 this has all the hallmarks of a common phishing or social engineering scam, and I'm not going to a"
+      },
+      {
+        "score": 0.03639669565622472,
+        "body": "Hi,\n\nCould you send over the contact details for the MSP lead we discussed on yesterday's call? I want to make sure I follow up with them while the conversation is still fresh.\n\nThanks,\nSteve"
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+=== Context Scorer — Wave 3 v1 ===
+heldout reals: n=300
+  score mean=0.4052 median=0.3659 p95=0.9123
+
+--- zero_shot (n=50) ---
+  fake score mean=0.4165 median=0.4192
+  AUC=0.5626
+  catch@2%FPR=0.000
+  catch@5%FPR=0.000
+  TOP 2 detected fakes (highest context anomaly):
+    0.7969  to='d7daeccbd88338ba9d7a12b5dbd8c2af@reply.craigslist.org'  body="Hey,\n\nQuick favor – I'm stuck on a flight and just realized I need to get my exp"
+    0.6746  to='angelmariposaxo@gmail.com'  body='Hi,\n\nI wanted to circle back on the pricing proposal I sent over last week. I kn'
+  BOTTOM 2 missed fakes (lowest context anomaly):
+    0.1914  to='keith.carter@kroll.com'  body="Hi there,\n\nHope you're doing well. I wanted to reach out quickly about the attac"
+    0.1786  to='beau@cancom.com'  body="Hi there,\n\nI wanted to give you a heads up that we've just received notification"
+
+--- few_shot (n=50) ---
+  fake score mean=0.4283 median=0.4267
+  AUC=0.5801
+  catch@2%FPR=0.000
+  catch@5%FPR=0.000
+  TOP 2 detected fakes (highest context anomaly):
+    0.7159  to='ballakha@sky.com'  body="Hi…\n\nCan you send me the contact info for the MSP lead from yesterday's call?\n\nT"
+    0.6587  to='elidunc@hotmail.com'  body='Hi…\n\nI hope your week is going well so far.\n\nCan you get the partner agreement s'
+  BOTTOM 2 missed fakes (lowest context anomaly):
+    0.1974  to='keith.carter@kroll.com'  body='Hi Vincent…\n\nThanks for sending that over.\n\nI reviewed the channel manager propo'
+    0.1929  to='beau@cancom.com'  body="Hi Team…\n\nWe need to update our records for our largest supplier's banking infor"
+
+--- high_fidelity (n=50) ---
+  fake score mean=0.4269 median=0.4373
+  AUC=0.5779
+  catch@2%FPR=0.000
+  catch@5%FPR=0.000
+  TOP 2 detected fakes (highest context anomaly):
+    0.7159  to='ballakha@sky.com'  body="Hi…\n\nCan you send me the contact info for the MSP lead from yesterday's call?\n\nT"
+    0.6585  to='elidunc@hotmail.com'  body='Hi…\n\nCan you get the partner agreement signed and back to the vendor by Thursday'
+  BOTTOM 2 missed fakes (lowest context anomaly):
+    0.1858  to='beau@cancom.com'  body='Hi team…\n\nI wanted to let you know that our largest supplier has changed their b'
+    0.1672  to='pzahedani@trustarc.com'  body='Hi…\n\nCould you please send the team roster to HR when you get a chance?\n\nThey ne'
+

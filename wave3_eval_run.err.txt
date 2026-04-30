@@ -1,0 +1,6 @@
+C:\Users\steve\Documents\TrueWriting\chimera_eval_v2.py:106: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  dt = datetime.utcnow() - timedelta(days=days_ago)
+C:\Users\steve\Documents\TrueWriting\chimera_eval_v2.py:106: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  dt = datetime.utcnow() - timedelta(days=days_ago)
+C:\Users\steve\Documents\TrueWriting\chimera_eval_v2.py:106: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  dt = datetime.utcnow() - timedelta(days=days_ago)

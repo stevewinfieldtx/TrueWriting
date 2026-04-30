@@ -1,0 +1,85 @@
+{
+  "timestamp": "20260415_185114",
+  "scorer_module": "chimera_scorer",
+  "n_heldout_real": 300,
+  "real_score_stats": {
+    "mean": 0.054742987915702035,
+    "median": 0.00011776599963458922,
+    "std": 0.18578144650498063,
+    "p95": 0.39035394206250285
+  },
+  "per_tier": {
+    "few_shot": {
+      "auc": 0.8313333333333334,
+      "catch_at_2_fpr": 0.14,
+      "n": 50
+    },
+    "high_fidelity": {
+      "auc": 0.8709333333333332,
+      "catch_at_2_fpr": 0.16,
+      "n": 50
+    },
+    "zero_shot": {
+      "auc": 0.9629333333333333,
+      "catch_at_2_fpr": 0.68,
+      "n": 50
+    }
+  },
+  "overall": {
+    "auc": 0.8884,
+    "catch_at_2_fpr": 0.32666666666666666,
+    "suggested_threshold": 0.9091580165591114
+  },
+  "ship_gate": {
+    "overall_pass": false,
+    "per_tier_pass": {
+      "few_shot": false,
+      "high_fidelity": false,
+      "zero_shot": false
+    }
+  },
+  "worst_fakes_we_missed": {
+    "few_shot": [
+      {
+        "score": 2.726040572165189e-07,
+        "body": "Hi,\n\nI attached the invoice for your review.\n\nCan you confirm approval today?\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      },
+      {
+        "score": 0.00018371755714152727,
+        "body": "Hi\u2026\n\nI need you to review the attached invoice and confirm approval today if possible.\n\nPlease let me know if you have any questions.\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      },
+      {
+        "score": 0.00025439033226104524,
+        "body": "Hi\u2026\n\nI hope your week is going well.\n\nCan you get the partner agreement signed and back to vendor by Thursday?\n\nPlease let me know if there are any issues and I will help any way I can.\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      }
+    ],
+    "high_fidelity": [
+      {
+        "score": 2.4798917142021537e-08,
+        "body": "Hi\u2026\n\nPlease review the attached invoice and confirm approval today.\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      },
+      {
+        "score": 4.688295759835981e-05,
+        "body": "Hi\u2026\n\nI need you to pick up $500 in gift cards for client appreciation as soon as possible.\n\nCan you grab them today and let me know when you have them?\n\nThanks.\n\nSteve"
+      },
+      {
+        "score": 0.0004162896792851978,
+        "body": "Hi\u2026\n\nCan you get the partner agreement signed and back to the vendor by Thursday?\n\nLet me know if there are any issues and I will help you to overcome the obstacle any way I can.\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      }
+    ],
+    "zero_shot": [
+      {
+        "score": 0.00026729383486667757,
+        "body": "Hey there,\n\nI hope this email finds you well. I wanted to reach out because we have an urgent need that just came up.\n\nWe need to purchase $500 in gift cards for client appreciation, and we're working against a pretty tight timeline here. I know this is last minute, but would you be able to help get this sorted ASAP?\n\nLet me know if you have any questions or need any additional details from my end"
+      },
+      {
+        "score": 0.0010354037044976172,
+        "body": "Hi,\n\nCould you please send over the contact information for the MSP lead we discussed on yesterday's call? I want to make sure I follow up with them while the conversation is still fresh.\n\nThanks!\n\nSteve"
+      },
+      {
+        "score": 0.0017708380932877077,
+        "body": "Hi,\n\nCould you send over the contact details for the MSP lead we discussed on yesterday's call? I want to make sure I follow up with them while the conversation is still fresh.\n\nThanks,\nSteve"
+      }
+    ]
+  }
+}

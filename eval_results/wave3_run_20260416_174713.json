@@ -1,0 +1,140 @@
+{
+  "timestamp": "20260416_174713",
+  "wave": 3,
+  "eval_type": "composed_stack",
+  "n_heldout_real": 300,
+  "real_stats": {
+    "chimera": {
+      "mean": 0.007511682649356555,
+      "median": 0.002208880448706263,
+      "p95": 0.00343511047044609
+    },
+    "context": {
+      "mean": 0.40519240593642714,
+      "median": 0.36589333013987735,
+      "p95": 0.9123349747815643
+    },
+    "composed": {
+      "mean": 0.31828543312193464,
+      "median": 0.2428038175590908,
+      "p95": 0.719764897709187
+    },
+    "verdicts": {
+      "pass": 250,
+      "flag": 45,
+      "block": 5
+    },
+    "false_flag_rate": 0.16666666666666666
+  },
+  "per_tier": {
+    "zero_shot": {
+      "n": 50,
+      "chimera": {
+        "auc": 0.9933333333333333,
+        "catch_at_2_fpr": 0.96,
+        "catch_at_5_fpr": 0.96
+      },
+      "context": {
+        "auc": 0.5626,
+        "catch_at_2_fpr": 0.0,
+        "catch_at_5_fpr": 0.0
+      },
+      "composed": {
+        "auc": 0.9836,
+        "catch_at_2_fpr": 0.96,
+        "catch_at_5_fpr": 0.96
+      },
+      "verdicts": {
+        "pass": 2,
+        "flag": 0,
+        "block": 48
+      },
+      "reason_distribution": {
+        "chimera_high": 48,
+        "grey_zone": 1,
+        "clean": 1
+      }
+    },
+    "few_shot": {
+      "n": 50,
+      "chimera": {
+        "auc": 0.8824,
+        "catch_at_2_fpr": 0.46,
+        "catch_at_5_fpr": 0.52
+      },
+      "context": {
+        "auc": 0.5800666666666666,
+        "catch_at_2_fpr": 0.0,
+        "catch_at_5_fpr": 0.0
+      },
+      "composed": {
+        "auc": 0.7761333333333333,
+        "catch_at_2_fpr": 0.4,
+        "catch_at_5_fpr": 0.4
+      },
+      "verdicts": {
+        "pass": 29,
+        "flag": 1,
+        "block": 20
+      },
+      "reason_distribution": {
+        "clean": 17,
+        "grey_zone": 12,
+        "chimera_high": 20,
+        "context_high": 1
+      }
+    },
+    "high_fidelity": {
+      "n": 50,
+      "chimera": {
+        "auc": 0.9326666666666666,
+        "catch_at_2_fpr": 0.66,
+        "catch_at_5_fpr": 0.68
+      },
+      "context": {
+        "auc": 0.5778666666666666,
+        "catch_at_2_fpr": 0.0,
+        "catch_at_5_fpr": 0.0
+      },
+      "composed": {
+        "auc": 0.8599333333333333,
+        "catch_at_2_fpr": 0.54,
+        "catch_at_5_fpr": 0.54
+      },
+      "verdicts": {
+        "pass": 22,
+        "flag": 1,
+        "block": 27
+      },
+      "reason_distribution": {
+        "chimera_high": 27,
+        "clean": 15,
+        "grey_zone": 7,
+        "context_high": 1
+      }
+    }
+  },
+  "overall": {
+    "chimera": {
+      "auc": 0.9361333333333334,
+      "catch_at_2_fpr": 0.6933333333333334
+    },
+    "context": {
+      "auc": 0.5735111111111111,
+      "catch_at_2_fpr": 0.0
+    },
+    "composed": {
+      "auc": 0.8732222222222222,
+      "catch_at_2_fpr": 0.6333333333333333
+    }
+  },
+  "ship_gate": {
+    "per_tier_pass": {
+      "zero_shot": true,
+      "few_shot": false,
+      "high_fidelity": false
+    },
+    "real_false_flag_pass": false,
+    "overall_pass": false
+  }
+}

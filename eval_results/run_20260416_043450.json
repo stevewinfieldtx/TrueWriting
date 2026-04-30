@@ -1,0 +1,85 @@
+{
+  "timestamp": "20260416_043450",
+  "scorer_module": "chimera_scorer",
+  "n_heldout_real": 300,
+  "real_score_stats": {
+    "mean": 0.007511682649356555,
+    "median": 0.002208880448706263,
+    "std": 0.05306899635316503,
+    "p95": 0.003384935844293769
+  },
+  "per_tier": {
+    "few_shot": {
+      "auc": 0.8824,
+      "catch_at_2_fpr": 0.46,
+      "n": 50
+    },
+    "high_fidelity": {
+      "auc": 0.9326666666666666,
+      "catch_at_2_fpr": 0.66,
+      "n": 50
+    },
+    "zero_shot": {
+      "auc": 0.9933333333333333,
+      "catch_at_2_fpr": 0.96,
+      "n": 50
+    }
+  },
+  "overall": {
+    "auc": 0.9361333333333334,
+    "catch_at_2_fpr": 0.6933333333333334,
+    "suggested_threshold": 0.007086043721915458
+  },
+  "ship_gate": {
+    "overall_pass": false,
+    "per_tier_pass": {
+      "few_shot": false,
+      "high_fidelity": false,
+      "zero_shot": true
+    }
+  },
+  "worst_fakes_we_missed": {
+    "few_shot": [
+      {
+        "score": 0.0022071550283553343,
+        "body": "Hi\u2026\n\nI need you to send the team roster to HR when you get a chance.\n\nThey need it for compliance reporting.\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      },
+      {
+        "score": 0.0022101557636946545,
+        "body": "Hi\u2026\n\nCan you send the team roster over to HR when you get a chance?\n\nThey need it for compliance reporting.\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      },
+      {
+        "score": 0.0022106693073347117,
+        "body": "Hi\u2026\n\nCould you send the team roster to HR when you get a chance?\n\nThey need it for compliance reporting.\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      }
+    ],
+    "high_fidelity": [
+      {
+        "score": 0.0022098992766461656,
+        "body": "Hi\u2026\n\nCan you send the team roster to HR when you get a chance?\n\nThey need it for compliance reporting.\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      },
+      {
+        "score": 0.00221453779064118,
+        "body": "Hi\u2026\n\nCan you get the partner agreement signed and back to the vendor by Thursday?\n\nLet me know if there are any issues and I will help you to overcome the obstacle any way I can.\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      },
+      {
+        "score": 0.002231263738554534,
+        "body": "Hi\u2026\n\nPlease review the attached invoice and confirm approval today.\n\nThanks.\n\n---Steve\n\nswinfield@hotmail.com\n425-753-8897"
+      }
+    ],
+    "zero_shot": [
+      {
+        "score": 0.002280080576099741,
+        "body": "Hi,\n\nCould you please send over the contact information for the MSP lead we discussed on yesterday's call? I want to make sure I follow up with them while the conversation is still fresh.\n\nThanks!\n\nSteve"
+      },
+      {
+        "score": 0.002393721216921052,
+        "body": "Hi,\n\nCould you send over the contact details for the MSP lead we discussed on yesterday's call? I want to make sure I follow up with them while the conversation is still fresh.\n\nThanks,\nSteve"
+      },
+      {
+        "score": 0.3,
+        "body": "Hi,\n\nHope you're doing well. I wanted to follow up on yesterday's call - could you send over the contact information for that MSP lead we discussed? I'd like to reach out to them while the conversation is still fresh.\n\nAppreciate it!\n\nSteve"
+      }
+    ]
+  }
+}

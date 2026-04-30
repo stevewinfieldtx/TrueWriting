@@ -1,0 +1,66 @@
+DLP fired on 11/300 real emails (3.7%)
+Score distribution: >=0.9: 0, >=0.7: 1, >=0.5: 2, any: 11
+
+=== TOP 20 REAL EMAILS FIRING DLP (FALSE POSITIVES) ===
+
+[170] score=0.800  cats=['sensitive_data']
+    subj: 'Two things'
+    hits: sensitive_data:'social security number'
+    body: 'Hi Dawn...\r\n\r\n1. Does someone need at social security number in order to buy insurance?\r\n\r\n2. If we could get enough Spanish speaking agents together, could we hire a Spanish speaking trainer? I bet we could easily get 5-10 people together within a m'
+
+[208] score=0.550  cats=['financial_urgency']
+    subj: 'RE: Invoice, proof'
+    hits: financial_urgency:'approve invoice'
+    body: 'I, Steve Winfield, approve invoice #140751, for $485.09, using credit card ending in 0887. This authorization is in lieu of on line order or card present.\r\n\r\nThanks.\r\n\r\n---Steve\r\n\r\n\r\n-----Original Message-----\r\nFrom: Steve <casino4u@casino4you.com> \r'
+
+[237] score=0.100  cats=['urgency']
+    subj: 'Checking in!!!'
+    hits: urgency:'immediately'
+    body: 'HI Ted…\r\n\r\nI trust things are going well for you and everyone is staying healthy.\r\n\r\nI was wondering if you would have some time to take a look at a new company I am helping out…www.Securvy.com.\r\n\r\nWhen I first started talking to them and learning mo'
+
+[224] score=0.100  cats=['urgency']
+    subj: 'Steve Winfield-Negligent Driving Case'
+    hits: urgency:'ASAP'
+    body: 'Hi Scott…\r\n\r\nI hope you have been well.\r\n\r\nMy understanding from my court case was that the Negligent Driving would be automatically removed from my record permanently after my 2 year probation. We are well past the end of my probation and it is stil'
+
+[203] score=0.100  cats=['urgency']
+    subj: 'RE: Steve Winfield * Welcome to CANCOM!'
+    hits: urgency:'right away'
+    body: 'Here you go…\r\n\r\nI could only find one place to sign on the Background Check document. If you let me know the other page that needs signing I will send it right away.\r\n\r\n---Steve\r\n\r\nFrom: Carol Knox <carol@cancom.com>\r\nSent: Friday, February 5, 2021 5'
+
+[118] score=0.100  cats=['urgency']
+    subj: 'Guys'
+    hits: urgency:'right away'
+    body: 'Just to keep you in the loop…\r\n\r\nHere are the three guys who are most promising in order.\r\n\r\nIf you don’t like the look of someone, let me know right away and I will drop them.\r\n\r\nI love you sooooooo much!!!\r\n\r\n\r\n\r\nMax\r\n\r\nHi there! I love your profil'
+
+[100] score=0.100  cats=['urgency']
+    subj: 'RE: What time......'
+    hits: urgency:'right now'
+    body: 'Since you aren’t there yet and I think Chad wants to walk in with me this morning, I will wait for him.\r\n\r\nI am getting various things set up right now.\r\n\r\n\r\nFrom: Nathan Ware <Nathan@rainnetworks.com>\r\nSent: Thursday, June 14, 2018 7:42 AM\r\nTo: Stev'
+
+[77] score=0.100  cats=['urgency']
+    subj: 'Christmas gift for me'
+    hits: urgency:'right now'
+    body: 'There is a sale going on right now.\r\n\r\nTwo pairs of jeans for $100, and I REALLY need some jeans.\r\n\r\n40W x 32L\r\n\r\nhttps://www.menswearhouse.com/p/silver-jeans-co-grayson-dark-wash-classic-fit-jeans-21N953\r\nhttps://www.menswearhouse.com/p/lucky-brand-'
+
+[71] score=0.100  cats=['urgency']
+    subj: 'Re: Winfield Case'
+    hits: urgency:'right now'
+    body: 'I have documentation for 20 hours.\r\n\r\nI am in the courtroom right now.\r\n\r\nGet Outlook for iOS<https://aka.ms/o0ukef>\r\n________________________________\r\nFrom: scott@washingtontrafficdefense.com <scott@washingtontrafficdefense.com>\r\nSent: Monday, March'
+
+[20] score=0.100  cats=['urgency']
+    subj: 'Re: [External] Channel Manager Role?'
+    hits: urgency:'right now'
+    body: 'Thanks, Bob.\r\n\r\nI am in Vegas right now, but my new wife absolutely hates it. :-)\r\n\r\nI would be perfectly fine relocating to Cincinnati or Cleveland.\r\n\r\nGet Outlook for iOS<https://aka.ms/o0ukef>\r\n________________________________\r\nFrom: Bob Skelley <'
+
+[7] score=0.100  cats=['secrecy']
+    subj: 'PCM'
+    hits: secrecy:'confidential'
+    body: '\ufeffOn 10/11/18, 9:51 AM, "Simmons, Bonnie" <Bonnie.Simmons@pcm.com> wrote:\r\n\r\n    Steve;\r\n    \r\n    I am not able to talk today as I’m attending a conference.  I am free at this time next week but not today.  \r\n    \r\n    Thank you,\r\n    \r\n    Bonnie L.'
+
+
+Category hit counts on reals:
+  urgency                    8
+  sensitive_data             1
+  financial_urgency          1
+  secrecy                    1

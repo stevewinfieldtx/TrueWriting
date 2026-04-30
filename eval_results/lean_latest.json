@@ -1,0 +1,128 @@
+{
+  "timestamp": "20260416_181913",
+  "eval_type": "lean_chimera_plus_dlp",
+  "n_heldout_real": 300,
+  "real_stats": {
+    "verdicts": {
+      "pass": 293,
+      "flag": 0,
+      "block": 7
+    },
+    "reasons": {
+      "clean": 293,
+      "chimera_high": 5,
+      "dlp_hit": 2
+    },
+    "false_flag_rate": 0.023333333333333334
+  },
+  "per_tier": {
+    "zero_shot": {
+      "n": 50,
+      "chimera": {
+        "auc": 0.9933333333333333,
+        "catch_at_2_fpr": 0.96,
+        "catch_at_5_fpr": 0.96
+      },
+      "dlp": {
+        "auc": 0.7978666666666666,
+        "catch_at_2_fpr": 0.44,
+        "catch_at_5_fpr": 0.62
+      },
+      "lean": {
+        "auc": 0.989,
+        "catch_at_2_fpr": 0.96,
+        "catch_at_5_fpr": 0.96
+      },
+      "verdicts": {
+        "pass": 2,
+        "flag": 0,
+        "block": 48
+      },
+      "reason_distribution": {
+        "chimera_high": 48,
+        "clean": 2
+      }
+    },
+    "few_shot": {
+      "n": 50,
+      "chimera": {
+        "auc": 0.8824,
+        "catch_at_2_fpr": 0.46,
+        "catch_at_5_fpr": 0.52
+      },
+      "dlp": {
+        "auc": 0.7379333333333333,
+        "catch_at_2_fpr": 0.42,
+        "catch_at_5_fpr": 0.5
+      },
+      "lean": {
+        "auc": 0.9246,
+        "catch_at_2_fpr": 0.52,
+        "catch_at_5_fpr": 0.74
+      },
+      "verdicts": {
+        "pass": 18,
+        "flag": 0,
+        "block": 32
+      },
+      "reason_distribution": {
+        "dlp_hit": 11,
+        "clean": 18,
+        "chimera_high": 20,
+        "chimera_mid+dlp_hit": 1
+      }
+    },
+    "high_fidelity": {
+      "n": 50,
+      "chimera": {
+        "auc": 0.9326666666666666,
+        "catch_at_2_fpr": 0.66,
+        "catch_at_5_fpr": 0.68
+      },
+      "dlp": {
+        "auc": 0.7381,
+        "catch_at_2_fpr": 0.42,
+        "catch_at_5_fpr": 0.5
+      },
+      "lean": {
+        "auc": 0.9373333333333334,
+        "catch_at_2_fpr": 0.6,
+        "catch_at_5_fpr": 0.74
+      },
+      "verdicts": {
+        "pass": 18,
+        "flag": 0,
+        "block": 32
+      },
+      "reason_distribution": {
+        "chimera_high": 27,
+        "dlp_hit": 3,
+        "clean": 18,
+        "chimera_mid+dlp_hit": 2
+      }
+    }
+  },
+  "overall": {
+    "chimera": {
+      "auc": 0.9361333333333334,
+      "catch_at_2_fpr": 0.6933333333333334
+    },
+    "dlp": {
+      "auc": 0.7579666666666667,
+      "catch_at_2_fpr": 0.4266666666666667
+    },
+    "lean": {
+      "auc": 0.9503111111111111,
+      "catch_at_2_fpr": 0.6933333333333334
+    }
+  },
+  "ship_gate": {
+    "per_tier_pass": {
+      "zero_shot": true,
+      "few_shot": false,
+      "high_fidelity": false
+    },
+    "real_false_flag_pass": true,
+    "overall_pass": false
+  }
+}

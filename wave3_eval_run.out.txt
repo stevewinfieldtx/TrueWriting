@@ -1,0 +1,42 @@
+
+Scoring 300 held-out real emails...
+  Chimera   stats:  mean=0.0075 median=0.0022 p95=0.0034
+  Context   stats:  mean=0.4052 median=0.3659 p95=0.9123
+  Composed  stats:  mean=0.3183 median=0.2428 p95=0.7198
+  Verdicts on reals:  {'pass': 250, 'flag': 45, 'block': 5}  (flag/block = false-flag)
+
+--- zero_shot (n=50) ---
+  Chimera   AUC=0.9933  catch@2%FPR=0.960
+  Context   AUC=0.5626  catch@2%FPR=0.000
+  Composed  AUC=0.9836  catch@2%FPR=0.960
+  Verdicts:  {'pass': 2, 'flag': 0, 'block': 48}
+  Reasons:   {'chimera_high': 48, 'grey_zone': 1, 'clean': 1}
+
+--- few_shot (n=50) ---
+  Chimera   AUC=0.8824  catch@2%FPR=0.460
+  Context   AUC=0.5801  catch@2%FPR=0.000
+  Composed  AUC=0.7761  catch@2%FPR=0.400
+  Verdicts:  {'pass': 29, 'flag': 1, 'block': 20}
+  Reasons:   {'clean': 17, 'grey_zone': 12, 'chimera_high': 20, 'context_high': 1}
+
+--- high_fidelity (n=50) ---
+  Chimera   AUC=0.9327  catch@2%FPR=0.660
+  Context   AUC=0.5779  catch@2%FPR=0.000
+  Composed  AUC=0.8599  catch@2%FPR=0.540
+  Verdicts:  {'pass': 22, 'flag': 1, 'block': 27}
+  Reasons:   {'chimera_high': 27, 'clean': 15, 'grey_zone': 7, 'context_high': 1}
+
+=== OVERALL (all tiers combined) ===
+  Chimera   AUC=0.9361  catch@2%FPR=0.693
+  Context   AUC=0.5735  catch@2%FPR=0.000
+  Composed  AUC=0.8732  catch@2%FPR=0.633
+
+--- Wave 3 Ship Gate ---
+  zero_shot        composed catch@2%FPR=0.960  PASS (need >= 0.85)
+  few_shot         composed catch@2%FPR=0.400  FAIL (need >= 0.85)
+  high_fidelity    composed catch@2%FPR=0.540  FAIL (need >= 0.85)
+  real-false-flag  rate=0.167  FAIL (need <= 0.030)
+  OVERALL          FAIL
+
+Saved: eval_results\wave3_run_20260416_174713.json
+Always-latest: eval_results\wave3_latest.json

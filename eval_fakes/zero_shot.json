@@ -1,0 +1,252 @@
+[
+  {
+    "body": "Hi there,\n\nI hope you're doing well. I'm reaching out with something time-sensitive that needs your attention.\n\nWe need to update our vendor payment details in your system before Friday's payroll run. Our banking information has changed, and if we don't get this sorted by then, it's going to cause delays on both our ends that neither of us want to deal with.\n\nHere's what I need from you:\n\n- Confirmation that you can process this update before Friday\n- The quickest way to submit our new payment details securely (portal, encrypted email, whatever works best on your end)\n\nI have all the documentation ready to go \u2013 just need to know where to send it. If there's any paperwork or vendor forms I need to complete, please send those over ASAP and I'll turn them around today.\n\nCan you let me know by end of day if this timeline works? If Friday is cutting it too close, I need to loop in our finance team to figure out a workaround.\n\nThanks for prioritizing this \u2013 really appreciate your help getting it squared away quickly.\n\nBest,\nSteve",
+    "topic": "Urgent request to update vendor payment details before Friday's payroll run",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hey,\n\nHope you're doing well! I wanted to reach out about something time-sensitive.\n\nWe're finalizing the Q4 acquisition and need to get a wire transfer processed by end of week. The finance team is slammed with year-end close, so I'm helping coordinate on their behalf.\n\nCan you help push this through? I'll need you to:\n- Process the wire to the account details I'll send in a separate message\n- Expedite it if possible given the deadline\n- Loop me in once it's queued up\n\nI know this is outside normal channels, but the deal is already approved and we're just trying to hit the timeline. Happy to jump on a quick call if you need any clarification.\n\nReally appreciate you helping us get this across the finish line!\n\nBest,\nSteve",
+    "topic": "Quick favor - can you process a wire transfer for the Q4 acquisition?",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hey there,\n\nI hope this email finds you well. I wanted to reach out about something that came across my desk this morning that didn't sit right with me.\n\nI received a request to purchase $500 in gift cards for \"client appreciation\" with some urgency attached to it. I'm going to be straight with you \u2013 this has all the hallmarks of a common phishing or social engineering scam, and I'm not going to action it.\n\nIf this is somehow a legitimate request that originated from within our organization, I'd need:\n- Proper documentation through our normal procurement process\n- Written approval from my direct manager\n- A clear business justification with specific client names and context\n- Confirmation via a separate communication channel (not just email)\n\nGift card requests sent via email, especially with urgency language, are one of the most common tactics scammers use. I take our company's security seriously, and I'd rather err on the side of caution here.\n\nIf you sent this and it's legitimate, no hard feelings \u2013 let's just connect via phone or Slack to verify. If you didn't send this, you may want to check your email security and change your password.\n\nThanks for understanding,\n\nSteve",
+    "topic": "Need you to buy $500 in gift cards for client appreciation ASAP",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI hope you're doing well. I wanted to reach out to make sure you received the invoice I sent over earlier this week.\n\nCould you please take a quick look at the attached and confirm your approval today if possible? I'm trying to get everything squared away on my end before the week wraps up.\n\nLet me know if you have any questions or need any clarification on the line items. Happy to jump on a quick call if that's easier.\n\nThanks so much for your help with this!\n\nBest,\nSteve",
+    "topic": "Please review the attached invoice and confirm approval today",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI wanted to give you a heads up about an important change that just came through from our largest supplier.\n\nThey've updated their banking details effective immediately, so any payments going forward need to be sent to the new account information. I know this kind of change can be a pain administratively, but they've confirmed this is legitimate and necessary on their end.\n\nI'll forward you the official notification they sent us with the new account details in a separate email. Just want to make sure everyone's aware so we don't have any payments bouncing or ending up in the wrong place.\n\nIf you have any questions or need me to verify anything, just let me know. I've got their finance team's direct contact info if you want to double-check on your end as well.\n\nThanks,\nSteve",
+    "topic": "Change in banking details for our largest supplier, effective immediately",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI wanted to reach out about a new project we're kicking off that I'd like to loop you in on early. Before I share details, I need to ask that you keep this confidential for now \u2013 we're not ready to discuss it with broader teams just yet.\n\nWe're exploring a new partner initiative that could significantly impact how we work together, and I think your organization would be a great fit to be involved from the ground up. The timing is still being finalized, but I wanted to give you a heads up before we make any formal announcements.\n\nWould you have 20-30 minutes this week or early next for a quick call? I can walk you through what we're thinking and get your initial thoughts. Given the confidential nature, I'd prefer to discuss over the phone rather than email.\n\nLet me know what works for your schedule.\n\nThanks,\nSteve",
+    "topic": "Confidential project kickoff - please don't discuss with the team yet",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI wanted to circle back on the pricing proposal I sent over last week. I know inboxes can get crazy, so just wanted to make sure it didn't slip through the cracks.\n\nHave you had a chance to review the numbers? I'm happy to jump on a quick call if you'd like to talk through any of the details or if there are questions about how the pricing structure works with your current setup.\n\nAlso, if the timing isn't quite right or if there's something holding you back, I'd love to hear that too. Always helpful to know where you stand so we can figure out the best path forward together.\n\nLet me know what makes sense on your end.\n\nBest,\nSteve",
+    "topic": "Following up on the pricing proposal I sent last week",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi,\n\nHope you're doing well. I wanted to follow up on yesterday's call - could you send over the contact information for that MSP lead we discussed? I'd like to reach out to them while the conversation is still fresh.\n\nAppreciate it!\n\nSteve",
+    "topic": "Can you send me the contact info for the MSP lead from yesterday's call?",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI hope you're doing well. I'm reaching out because I need to get our Q3 financials forwarded to our external auditor by end of day today. \n\nCould you please send over the complete Q3 financial package to [auditor email]? If there's any reason we can't hit that EOD deadline, just let me know ASAP so I can loop in the right people.\n\nThanks for your help with this \u2013 I really appreciate it.\n\nBest,\nSteve",
+    "topic": "I need the Q3 financials forwarded to an external auditor by EOD",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hey,\n\nQuick favor \u2013 could you approve my expense report for me? I'm stuck on a flight right now and won't have proper access for a few hours, but it needs to go through today.\n\nShould be pretty straightforward \u2013 just the usual conference expenses from last week's MSP event in Denver (hotel, flights, client dinners). Everything's documented and within policy limits.\n\nReally appreciate you covering this for me. I'll owe you one.\n\nThanks,\nSteve",
+    "topic": "Approve this expense report on my behalf - I'm on a flight",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi everyone,\n\nI need to move our Tuesday meeting to accommodate a client call that just came up. \n\nCould someone please update the calendar invite and loop in the rest of the team? I want to make sure everyone gets the notification and we don't have folks showing up at the original time.\n\nLet me know what works better for everyone \u2013 I'm flexible Wednesday afternoon or Thursday morning if either of those slots are open.\n\nThanks for understanding,\n\nSteve",
+    "topic": "Moving the Tuesday meeting - please update the calendar and let the team know",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi,\n\nJust wanted to give you a quick heads up that someone from our legal team will be reaching out tomorrow regarding the contract we discussed. They'll want to walk through a few of the terms and answer any questions you might have on your end.\n\nShould be pretty straightforward, but I wanted to make sure you weren't caught off guard by the call. If you'd prefer to schedule it for a specific time rather than a cold call, just let me know and I can coordinate that.\n\nLet me know if you have any questions in the meantime.\n\nThanks,\nSteve",
+    "topic": "Heads up - expect a call from our legal team tomorrow about the contract",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI hope you're doing well. I wanted to reach out regarding the partner agreement we sent over last week. \n\nWould it be possible to get that reviewed, signed, and returned by Thursday? We're working to finalize our Q1 partner onboarding, and having your agreement back by then would really help us stay on track.\n\nIf you have any questions about the terms or need any clarification on anything in the agreement, just let me know. I'm happy to jump on a quick call to walk through it together.\n\nThanks so much for your help with this!\n\nBest,\nSteve",
+    "topic": "Can you get the partner agreement signed and back to vendor by Thursday?",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "I'll be happy to help draft a response once you forward over that channel manager proposal. Just send it my way when you get a chance and let me know if there are any specific points you want me to emphasize or concerns you'd like me to address in the response.\n\nIn the meantime, are there any particular aspects of the proposal you're already thinking about - pricing structure, support commitments, co-marketing opportunities, or anything else on your radar?\n\nTalk soon,\n\nSteve",
+    "topic": "Draft a response to the channel manager proposal I'll forward shortly",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nCould you please send over the current team roster to HR when you get a chance? They've reached out about needing it for some compliance reporting they're working on.\n\nIf you need any clarification on what they're looking for or who to send it to, just let me know and I can connect you with the right person.\n\nThanks,\nSteve",
+    "topic": "Please send the team roster to HR - they need it for compliance reporting",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI hope you're doing well. I'm reaching out with a time-sensitive request that needs your attention before end of business Friday.\n\nWe're updating our vendor payment information in our finance system, and we need to ensure your current banking details are on file before our payroll run processes this Friday. This will help us avoid any delays with your upcoming commission payments and co-op reimbursements.\n\nCould you please reply with the following by Thursday EOD:\n\n\u2022 Company legal name\n\u2022 Bank account number and routing number (or wire transfer details if preferred)\n\u2022 Primary contact for payment inquiries\n\u2022 Any changes to your W-9 information\n\nIf nothing has changed on your end, just shoot me a quick confirmation and we'll keep everything as is.\n\nI know this is short notice, but our finance team is doing a full audit and cleanup of vendor records, and I want to make sure we don't have any hiccups with your payments.\n\nLet me know if you have any questions or need anything else from our side.\n\nThanks for your help with this!\n\nSteve",
+    "topic": "Urgent request to update vendor payment details before Friday's payroll run",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hey,\n\nI hope you're doing well! I wanted to reach out about something a bit time-sensitive.\n\nWe're finalizing the Q4 acquisition and need to get a wire transfer processed by end of week. I know this is outside the usual channel stuff we work on together, but our finance team is absolutely slammed and asked if I could help coordinate on their behalf.\n\nCould you help me get this moving? I can send over the wire details and amount separately - just need to confirm you're able to process it from your end.\n\nI really appreciate you taking a look at this. Let me know if you need anything from me to make it happen.\n\nThanks so much,\n\nSteve",
+    "topic": "Quick favor - can you process a wire transfer for the Q4 acquisition?",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hey there,\n\nI hope you're doing well! I wanted to reach out about something a bit time-sensitive.\n\nWe're putting together a client appreciation initiative for some of our top MSP partners, and I need to get $500 in gift cards purchased ASAP. The idea is to show our gratitude to a few key contacts who've really gone above and beyond in helping us expand our footprint in their organizations.\n\nCould you help me get this sorted today or tomorrow at the latest? I'm thinking Amazon or Visa gift cards would probably work best since they're the most flexible, but I'm open to suggestions if you have other ideas.\n\nLet me know what you need from me to make this happen \u2013 I can jump on a quick call if that's easier, or handle any paperwork/approvals on my end.\n\nThanks so much for your help with this!\n\nSteve",
+    "topic": "Need you to buy $500 in gift cards for client appreciation ASAP",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nHope you're doing well. I wanted to reach out quickly about the attached invoice that needs your review.\n\nCould you take a look when you get a chance and confirm approval today? We're trying to get everything processed before end of day, so I'd really appreciate your prompt feedback.\n\nLet me know if you have any questions or need any clarification on the charges.\n\nThanks so much,\nSteve",
+    "topic": "Please review the attached invoice and confirm approval today",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI wanted to give you a heads up that we've just received notice of a banking detail change from one of our key suppliers, effective immediately.\n\nWe're currently verifying everything on our end before processing any payments to the new account \u2013 you know how it is with these things, can never be too careful. Our finance team is doing their due diligence to confirm the change is legitimate through our usual verification channels.\n\nIf you happen to receive any similar notifications from suppliers in your network, I'd definitely recommend taking the extra time to verify through a secondary method (phone call to a known number, etc.) before updating anything in your payment systems. We've seen more than a few attempts at payment redirection fraud lately, and it's always better to be paranoid than sorry.\n\nI'll keep you posted on how our verification process goes. Let me know if you want to compare notes on what procedures you have in place for this kind of thing \u2013 always good to learn from each other.\n\nBest,\nSteve",
+    "topic": "Change in banking details for our largest supplier, effective immediately",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI wanted to reach out about something that's still under wraps for now. We're kicking off a new project that I think could be really interesting for our partnership, but we're keeping it quiet until we have all the pieces in place.\n\nI can't go into full details just yet, but I wanted to give you a heads up that this is coming down the pipeline. We're targeting a launch in the next few weeks, and I'll be able to share more specifics once we get internal sign-off.\n\nIn the meantime, I'd appreciate it if you could keep this between us \u2013 we're not ready to socialize this with the broader teams on either side yet. Just want to make sure we've got everything buttoned up before we open it up for wider discussion.\n\nI'll circle back with you early next week with more information. If you have any questions in the meantime, feel free to reach out directly to me.\n\nThanks for understanding, and looking forward to sharing more soon.\n\nBest,\nSteve",
+    "topic": "Confidential project kickoff - please don't discuss with the team yet",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI wanted to circle back on the pricing proposal I sent over last week. I know things get busy, so I figured I'd bump this back to the top of your inbox.\n\nHave you had a chance to review the numbers? I'm happy to jump on a quick call if you'd like to talk through any of the details or if there are questions about how we structured the partner tiers.\n\nAlso, if the timing isn't quite right or if there's someone else on your team I should be connecting with on this, just let me know. Always want to make sure I'm working with the right folks.\n\nLooking forward to hearing from you.\n\nBest,\nSteve",
+    "topic": "Following up on the pricing proposal I sent last week",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi,\n\nCould you please send over the contact information for the MSP lead we discussed on yesterday's call? I want to make sure I follow up with them while the conversation is still fresh.\n\nThanks!\n\nSteve",
+    "topic": "Can you send me the contact info for the MSP lead from yesterday's call?",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI hope you're doing well. I'm reaching out because I need to get our Q3 financials forwarded to our external auditor by end of day today. \n\nCould you please send over the complete Q3 financial package when you get a chance? I want to make sure we hit this deadline and keep things moving on our end.\n\nLet me know if you need any additional information from me, or if there are any issues getting this over to them today.\n\nThanks so much for your help with this.\n\nBest,\nSteve",
+    "topic": "I need the Q3 financials forwarded to an external auditor by EOD",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hey,\n\nQuick favor \u2013 I'm stuck on a flight and just realized I need to get my expense report approved ASAP. Would you mind signing off on it for me? Should be in the system already under my name from last week's vendor meetings in Chicago.\n\nNothing crazy on there \u2013 just the usual hotel, meals, and ground transport. Everything's within policy.\n\nReally appreciate you covering this while I'm offline. I'll owe you one!\n\nThanks,\nSteve",
+    "topic": "Approve this expense report on my behalf - I'm on a flight",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi everyone,\n\nI need to move our Tuesday meeting to accommodate a client call that just came up. \n\nCould someone please update the calendar invite and shoot a quick note to the team with the new time? I'm jumping between calls this afternoon and want to make sure everyone gets the heads up.\n\nLet me know what works for the group \u2013 I'm flexible Wednesday afternoon or Thursday morning if either of those slots are open.\n\nThanks for rolling with the change.\n\nSteve",
+    "topic": "Moving the Tuesday meeting - please update the calendar and let the team know",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi,\n\nJust wanted to give you a quick heads up that our legal team will be reaching out tomorrow to discuss a few items in the contract. Nothing major \u2013 they just want to walk through some of the terms directly and answer any questions you might have.\n\nShould be a pretty straightforward conversation. If you need me to jump on the call as well, just let me know and I'm happy to join.\n\nThanks,\nSteve",
+    "topic": "Heads up - expect a call from our legal team tomorrow about the contract",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nHope you're doing well. I wanted to reach out about the partner agreement we sent over last week. \n\nWe're working to finalize our Q1 partner onboarding, and it would be great if we could get the signed agreement back by Thursday. This will help us get everything set up on our end so you can start accessing partner resources, deal registration, and the full support package right away.\n\nIf you have any questions about the terms or need clarification on anything, just let me know and I'm happy to jump on a quick call.\n\nThanks for your help in keeping things moving!\n\nBest,\nSteve",
+    "topic": "Can you get the partner agreement signed and back to vendor by Thursday?",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "I'll be happy to draft a response once you forward me the channel manager proposal. Just send it over and let me know if there are any specific points you'd like me to address or any particular angle you want to take in the response.\n\nIn the meantime, are there any key concerns or priorities you want me to keep in mind when reviewing it?",
+    "topic": "Draft a response to the channel manager proposal I'll forward shortly",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi team,\n\nCould you please send over the current team roster to HR when you get a chance? They've reached out about needing it for compliance reporting purposes.\n\nIf there's anything specific they need included that I should know about, just let me know and I can clarify with them.\n\nThanks,\nSteve",
+    "topic": "Please send the team roster to HR - they need it for compliance reporting",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI hope you're doing well. I'm reaching out with a time-sensitive matter that needs your attention before this Friday.\n\nWe need to update our vendor payment details in your system ahead of Friday's payroll run. Our banking information has recently changed, and we want to make sure there are no delays or issues with upcoming payments.\n\nCould you please confirm:\n- The current payment details you have on file for us\n- The process to update our banking information\n- Whether we can get this changed before Friday's cutoff\n\nI can provide our updated W-9 and banking documentation as soon as you let me know what you need from our end.\n\nI really appreciate you prioritizing this \u2013 I know Friday is coming up quickly, but I wanted to give you as much heads up as possible to avoid any payment disruptions.\n\nLet me know if you have any questions or need anything else from me.\n\nThanks so much,\nSteve",
+    "topic": "Urgent request to update vendor payment details before Friday's payroll run",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hey,\n\nHope you're doing well! I wanted to reach out about something time-sensitive.\n\nWe're wrapping up the Q4 acquisition and need to get a wire transfer processed by end of week to close everything out. The finance team is slammed with year-end stuff, and I'm trying to help move things along on my end.\n\nCould you help me get this processed? I can send over the wire details and documentation - just need to know the best way to route this through your team.\n\nLet me know if you need anything from me to make this happen. Really appreciate you jumping on this.\n\nThanks!\n\nSteve",
+    "topic": "Quick favor - can you process a wire transfer for the Q4 acquisition?",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hey there,\n\nI hope this email finds you well. I wanted to reach out because we have an urgent need that just came up.\n\nWe need to purchase $500 in gift cards for client appreciation, and we're working against a pretty tight timeline here. I know this is last minute, but would you be able to help get this sorted ASAP?\n\nLet me know if you have any questions or need any additional details from my end. I really appreciate your help with this.\n\nThanks so much,\nSteve",
+    "topic": "Need you to buy $500 in gift cards for client appreciation ASAP",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI hope you're doing well. I wanted to reach out quickly about the invoice I've attached to this email.\n\nWould you mind taking a look at it when you get a chance today and letting me know if everything looks good on your end? I just need a quick confirmation so we can keep things moving smoothly.\n\nIf you have any questions or spot anything that needs adjusting, just give me a shout and we'll get it sorted out right away.\n\nThanks so much for your help with this!\n\nBest,\nSteve",
+    "topic": "Please review the attached invoice and confirm approval today",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI wanted to give you a heads up that we've just received notification of a change in banking details for one of our key suppliers, effective immediately.\n\nI know these types of changes can sometimes raise red flags (and rightfully so), but I've verified this directly with our main contact there and it's legitimate. They've switched banks as part of a broader treasury management update on their end.\n\nIf you're processing any payments to them in the next few days, please make sure you're using the updated account information. I'll be sending through the new details in a separate secure message shortly \u2013 just didn't want any payments to get held up or sent to the wrong place.\n\nAs always, if anything seems off or you want to double-check before processing, just give me a shout. Better safe than sorry with this stuff.\n\nThanks,\nSteve",
+    "topic": "Change in banking details for our largest supplier, effective immediately",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nHope you're doing well. I wanted to reach out about something that's still under wraps on our end.\n\nWe're kicking off a new initiative that could have some real implications for how we work together, and I wanted to give you a heads up before it becomes more widely known. At this stage, we're keeping it pretty close to the vest \u2013 even internally, only a handful of people are in the loop.\n\nI can't share all the details just yet, but I wanted to make sure you heard it from me first. We're looking at some changes that could open up new opportunities for our partnership, and I think you'll be excited about where we're headed.\n\nCan we schedule a quick call sometime in the next few days? I'd like to walk you through what we're thinking and get your initial thoughts. Just want to emphasize that this is still confidential, so I'd appreciate keeping it between us for now until we're ready to make a broader announcement.\n\nLet me know what works for your schedule.\n\nBest,\nSteve",
+    "topic": "Confidential project kickoff - please don't discuss with the team yet",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi,\n\nI wanted to circle back on the pricing proposal I sent over last week. I know you're probably juggling a lot right now, but I wanted to make sure it didn't get buried in your inbox.\n\nHave you had a chance to review the numbers? I'm happy to jump on a quick call if you have any questions or if there's anything that needs tweaking to make it work better for your business.\n\nLet me know what makes sense on your end.\n\nThanks,\nSteve",
+    "topic": "Following up on the pricing proposal I sent last week",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi,\n\nCould you send over the contact details for the MSP lead we discussed on yesterday's call? I want to make sure I follow up with them while the conversation is still fresh.\n\nThanks,\nSteve",
+    "topic": "Can you send me the contact info for the MSP lead from yesterday's call?",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI hope you're doing well. I'm reaching out because I need to get our Q3 financials sent over to our external auditor before the end of the day today.\n\nCould you please forward those documents to them? If you need the auditor's contact information, just let me know and I'll send it right over.\n\nI appreciate you helping me get this squared away quickly.\n\nThanks,\nSteve",
+    "topic": "I need the Q3 financials forwarded to an external auditor by EOD",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hey,\n\nQuick favor \u2013 I'm stuck on a flight right now and just realized I need to get my expense report approved before EOD today. Would you mind signing off on it for me? Should be straightforward, just the usual client dinner expenses and mileage from last week's partner meetings.\n\nI can loop back with you once I land if there are any questions, but I'm pretty sure everything's documented correctly.\n\nReally appreciate you covering this for me.\n\nThanks,\nSteve",
+    "topic": "Approve this expense report on my behalf - I'm on a flight",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi team,\n\nI need to move our Tuesday meeting to accommodate a client call that just came up. Could someone please update the calendar invite and loop in everyone who's attending?\n\nHappy to work around whatever time slots work best for the group \u2013 just let me know what you're thinking and I'll make it work on my end.\n\nThanks for being flexible on this.\n\nSteve",
+    "topic": "Moving the Tuesday meeting - please update the calendar and let the team know",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hey,\n\nJust wanted to give you a quick heads up that our legal team will be reaching out tomorrow to discuss the contract details. They have a few items they want to clarify directly with you, nothing major, just their standard process to make sure we're all on the same page.\n\nShould be a pretty straightforward conversation. If you have any questions before they call, or if there's a better time for them to reach you, just let me know and I'll coordinate.\n\nThanks,\nSteve",
+    "topic": "Heads up - expect a call from our legal team tomorrow about the contract",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nQuick question \u2013 are we able to get the partner agreement signed and back to the vendor by Thursday? They're hoping to have everything finalized before end of week so we can kick things off.\n\nLet me know if you need anything from my end to help move this along, or if Thursday is too tight and we need to push it out a bit.\n\nThanks,\nSteve",
+    "topic": "Can you get the partner agreement signed and back to vendor by Thursday?",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "I'll be happy to draft a response once you forward me the channel manager proposal. Just send it over and let me know if there are any specific points you'd like me to address or any particular angle you want to take in the response.\n\nIn the meantime, are there any key concerns or priorities I should keep in mind when reviewing it?\n\nThanks,\nSteve",
+    "topic": "Draft a response to the channel manager proposal I'll forward shortly",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi team,\n\nQuick admin item \u2013 HR reached out and needs our current team roster for their compliance reporting. Could someone please send that over to them by end of week?\n\nLet me know if you need any clarification on what they're looking for, but I believe it's just the standard roster with names, titles, and start dates.\n\nThanks,\nSteve",
+    "topic": "Please send the team roster to HR - they need it for compliance reporting",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI hope you're doing well. I'm reaching out with something time-sensitive that needs your attention.\n\nWe've had a change in our banking setup, and I need to get our updated payment details to you before your payroll run this Friday. Our accounting team just flagged this, and I want to make sure there's no disruption to our commission payments or any outstanding invoices.\n\nCould you please confirm:\n- What information you need from us (new ACH details, W-9, etc.)\n- Who I should send the updated details to\n- The exact cutoff time on Friday to ensure everything processes smoothly\n\nI have everything ready to go on my end \u2013 just need to know where to send it and in what format works best for your AP team.\n\nReally appreciate you helping me get this squared away quickly. Let me know if you need anything else from me.\n\nBest,\nSteve",
+    "topic": "Urgent request to update vendor payment details before Friday's payroll run",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hey,\n\nHope you're doing well! I wanted to reach out about something time-sensitive.\n\nWe're wrapping up the Q4 acquisition paperwork and need to get a wire transfer processed by end of week to keep everything on track. The finance team is slammed with quarter-end stuff, so I'm helping coordinate from my end.\n\nCould you help me get this moving? I'll need you to process a wire for the remaining balance. I can send over the banking details and amount separately - just want to make sure you're able to help out before I loop in all the specifics.\n\nLet me know if you can assist with this. Really appreciate it!\n\nBest,\nSteve",
+    "topic": "Quick favor - can you process a wire transfer for the Q4 acquisition?",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hey there,\n\nI hope this email finds you well. I wanted to reach out about something a bit unusual that just came across my desk.\n\nI received a request to purchase $500 in gift cards for \"client appreciation\" ASAP, but I have to be honest \u2013 this raises some red flags for me. In our industry, we're constantly educating partners about social engineering tactics and phishing schemes, and gift card requests are one of the most common vectors for fraud.\n\nBefore I move forward with anything like this, I need to:\n\n1. Verify this request through our standard approval channels\n2. Understand the specific business case and which clients these are intended for\n3. Confirm this aligns with our client appreciation policies and budget\n\nIf this is a legitimate need, I'm happy to help coordinate it through the proper channels. But given what we do in cybersecurity, I'm sure you understand why I need to pump the brakes and validate this first.\n\nCan you provide more context on where this request originated? If it came via email, I'd also recommend verifying directly with the sender through a known phone number or separate communication channel.\n\nThanks for understanding \u2013 better safe than sorry, especially in our line of work.\n\nBest,\nSteve",
+    "topic": "Need you to buy $500 in gift cards for client appreciation ASAP",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi there,\n\nI hope you're doing well. I wanted to reach out quickly about the attached invoice that needs your attention.\n\nCould you please take a look when you get a moment and confirm your approval today? We're trying to get everything squared away on our end before end of business.\n\nIf you have any questions or spot anything that doesn't look right, just let me know and I'll get it sorted out right away.\n\nThanks so much for your help with this!\n\nBest,\nSteve",
+    "topic": "Please review the attached invoice and confirm approval today",
+    "tier": "zero_shot"
+  },
+  {
+    "body": "Hi team,\n\nI wanted to give you a heads up that we've just received notification from SecureNet Systems about a change to their banking details, effective immediately.\n\nAs our largest supplier, this is obviously critical to get right. I've already verified the change through a phone call with their accounts payable contact (spoke directly with Janet Chen at their main office number), so we're good to proceed.\n\nThe new account details are being sent under separate cover by our finance team, and they'll be updating our payment systems accordingly. If you have any pending invoices or payments to SecureNet in your queue, please hold off on processing them until you receive the updated banking information from finance.\n\nJust to be safe, if anyone receives what looks like a duplicate notification or any follow-up emails about this change, please forward them to me before taking any action. We all know how these things can sometimes be spoofed, so better to triple-check than have any issues.\n\nLet me know if you have any questions.\n\nThanks,\nSteve",
+    "topic": "Change in banking details for our largest supplier, effective immediately",
+    "tier": "zero_shot"
+  }
+]

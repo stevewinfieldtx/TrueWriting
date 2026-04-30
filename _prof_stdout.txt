@@ -1,0 +1,6 @@
+[profiler] loading eval_splits/train_real.json...
+[profiler] 1700 emails loaded
+[profiler] building profiles...
+[profiler] 596 recipient profiles + 1 global + 1 meta
+[profiler] known recipients: 154
+[profiler] saved to recipient_profiles.json

@@ -1,0 +1,8 @@
+real-looking, normal ctx             ch=0.0015  ctx=0.20  dlp=0.00  ->  pass   composite=0.150  (clean)
+real-looking, high ctx               ch=0.0015  ctx=0.85  dlp=0.00  ->  flag   composite=0.605  (context_high)
+mid chimera, normal ctx              ch=0.0050  ctx=0.20  dlp=0.00  ->  pass   composite=0.288  (clean)
+mid chimera, high ctx                ch=0.0050  ctx=0.80  dlp=0.00  ->  flag   composite=0.653  (context_high)
+high chimera alone                   ch=0.0300  ctx=0.20  dlp=0.00  ->  block  composite=0.904  (chimera_high)
+low chimera + DLP hit                ch=0.0015  ctx=0.20  dlp=0.90  ->  block  composite=0.900  (dlp_hit)
+mid chimera + DLP hit                ch=0.0050  ctx=0.20  dlp=0.90  ->  block  composite=0.900  (dlp_hit)
+zero-shot fake (score 0.3)           ch=0.3000  ctx=0.20  dlp=0.00  ->  block  composite=1.000  (chimera_high)
